@@ -40,7 +40,7 @@ class MeasureViewViewModel: ObservableObject {
     @Published var endX: Double = 0.0
     @Published var endY: Double = 0.0
     @Published var endZ: Double = 0.0
-//    @Published var measurement: Double = 0
+    @Published var measurement: Double = 0
     @Published var isWithinRange: Bool = false
     @Published var repCount: Int = 0
     

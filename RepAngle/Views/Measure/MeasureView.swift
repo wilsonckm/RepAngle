@@ -9,25 +9,7 @@ import SwiftUI
 
 struct MeasureView: View {
     @StateObject private var viewModel = MeasureViewViewModel()
-    
-//    @State private var currentX: Double = 0.0
-//    @State private var currentY: Double = 0.0
-//    @State private var currentZ: Double = 0.0
-//    @State private var initialX: Double = 0.0
-//    @State private var initialY: Double = 0.0
-//    @State private var initialZ: Double = 0.0
-//    @State private var endX: Double = 0.0
-//    @State private var endY: Double = 0.0
-//    @State private var endZ: Double = 0.0
-//    @State private var measurement: Double = 0
-//    
-//    @State private var isWithinRange: Bool = false
-//    @State private var repCount: Int = 0
-//    
-//    @State private var currentDate = Date.now
-//    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
-    
     var body: some View {
         
 //        if (abs(roundToTenth(value: radiansToDegrees(radians: motion.x)) - viewModel.endX) <= 6)
@@ -75,7 +57,7 @@ struct MeasureView: View {
                         .bold()
                     Text("\(viewModel.currentX, specifier: "%.2f")")
                     Text("\(viewModel.currentY, specifier: "%.2f")")
-                    Text("\(viewModel.currentX, specifier: "%.2f")")
+                    Text("\(viewModel.currentZ, specifier: "%.2f")")
                 }
                 .padding()
                 
@@ -103,7 +85,7 @@ struct MeasureView: View {
                 VStack {
                     Text("Measurement")
                         .bold()
-//                    Text("\(viewModel.measurement, specifier: "%.2f")")
+                    Text("\(viewModel.measurement, specifier: "%.2f")")
                 }
                 
                 VStack {
@@ -112,9 +94,9 @@ struct MeasureView: View {
                 
                 VStack{
                     Button("Start Position"){
-//                        viewModel.initialX = roundToTenth(value:radiansToDegrees(radians:motion.x))
-//                        viewModel.initialY = roundToTenth(value:radiansToDegrees(radians:motion.y))
-//                        viewModel.initialZ = roundToTenth(value:radiansToDegrees(radians:motion.z))
+                        viewModel.initialX = viewModel.currentX
+                        viewModel.initialY = viewModel.currentY
+                        viewModel.initialZ = viewModel.currentZ
                     }
                     .buttonStyle(.borderedProminent)
                     .foregroundStyle(.white)
@@ -122,9 +104,9 @@ struct MeasureView: View {
                     .tint(.green)
                     
                     Button("End Position"){
-//                        viewModel.endX = roundToTenth(value:radiansToDegrees(radians:motion.x))
-//                        viewModel.endY = roundToTenth(value:radiansToDegrees(radians:motion.y))
-//                        viewModel.endZ = roundToTenth(value:radiansToDegrees(radians:motion.z))
+                        viewModel.endX = viewModel.currentX
+                        viewModel.endY = viewModel.currentY
+                        viewModel.endZ = viewModel.currentZ
                     }
                     .buttonStyle(.borderedProminent)
                     .foregroundStyle(.white)
@@ -132,7 +114,7 @@ struct MeasureView: View {
                     .tint(.red)
                     
                     Button("Measure"){
-//                        viewModel.measurement = calculateGreatestDifference()
+                        viewModel.measurement = viewModel.calculateGreatestDifference()
                     }
                     .buttonStyle(.borderedProminent)
                     .foregroundStyle(.white)

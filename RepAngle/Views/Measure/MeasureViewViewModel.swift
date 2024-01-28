@@ -8,8 +8,12 @@
 import Foundation
 
 class MeasureViewViewModel: ObservableObject {
-//    @Published private var motionManager = MotionManager()
-
+//    @Published var motionManager = MotionManager()
+    private var motionManager = MotionManager.shared
+    private var timer: Timer?
+    @Published var currentX: Double = 0.0
+    @Published var currentY: Double = 0.0
+    @Published var currentZ: Double = 0.0
     @Published var initialX: Double = 0.0
     @Published var initialY: Double = 0.0
     @Published var initialZ: Double = 0.0
@@ -20,26 +24,55 @@ class MeasureViewViewModel: ObservableObject {
     @Published var isWithinRange: Bool = false
     @Published var repCount: Int = 0
     
-    @Published var currentDate = Date.now
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+//    @Published var currentDate = Date.now
+//    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     
+    //Timer required to force a SwiftUI view update for the continuous current X, Y, Z values. Previous attempts to use computed properties did not update
+    
+    init() {
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            self?.updateMotionData()
+        }
+    }
+    
+    private func updateMotionData() {
+          currentX = formatRawValueToDegrees(rawValue: motionManager.x)
+          currentY = formatRawValueToDegrees(rawValue: motionManager.y)
+          currentZ = formatRawValueToDegrees(rawValue: motionManager.z)
+      }
+
     
 /*  Formated degrees of continuous measurement.
     Computed property allows value to recaluclate every time it is accessed
     Always using current value of self
  
+        !!!!Update: When moving coreMotion to separate file, computed properties would not trigger SwiftUI view update. See above for fix.
  */
+       
+//    var currentX: Double {
+//        formatRawValueToDegrees(rawValue: motionManager.x)
+//    }
+//    var currentY: Double {
+//        formatRawValueToDegrees(rawValue: motionManager.y)
+//    }
+//    
+//    var currentZ: Double {
+//        formatRawValueToDegrees(rawValue: motionManager.z)
+//    }
     
-    var currentX: Double {
-        formatRawValueToDegrees(rawValue: MotionManager.shared.x)
-    }
-    var currentY: Double {
-        formatRawValueToDegrees(rawValue: MotionManager.shared.y)
+    //Checks if device motion is active
+    var isMotionActive: Bool {
+        motionManager.isDeviceMotionActive
     }
     
-    var currentZ: Double {
-        formatRawValueToDegrees(rawValue: MotionManager.shared.z)
-    }
+    //Manual control to start and stop --> Prevents battery waste
+    func startMotionUpdates() {
+           motionManager.startUpdates()
+       }
+
+       func stopMotionUpdates() {
+           motionManager.stopUpdates()
+       }
     
     
     //Formula to format raw value into degrees to tenth place.

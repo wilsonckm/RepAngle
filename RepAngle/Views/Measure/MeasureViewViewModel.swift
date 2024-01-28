@@ -6,34 +6,10 @@
 //
 
 import Foundation
-import CoreMotion
-
-//class MotionManager: ObservableObject {
-//}
 
 class MeasureViewViewModel: ObservableObject {
-    
-    @Published var motionManager = CMMotionManager()
-    
-    //Raw values
-    @Published var x = 0.0
-    @Published var y = 0.0
-    @Published var z = 0.0
-    
-    init() {
-        //Captures data on an interval. Mainly for battery consumption.
-        motionManager.deviceMotionUpdateInterval = 1/15
-        
-        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
-            //Data is optional therefore necessary to unwrap
-            guard let motion = data?.attitude else { return }
-            self?.x = motion.roll
-            self?.y = motion.pitch
-            self?.z = motion.yaw
-        }
-    }
-    
-    
+//    @Published private var motionManager = MotionManager()
+
     @Published var initialX: Double = 0.0
     @Published var initialY: Double = 0.0
     @Published var initialZ: Double = 0.0
@@ -55,14 +31,14 @@ class MeasureViewViewModel: ObservableObject {
  */
     
     var currentX: Double {
-        formatRawValueToDegrees(rawValue: self.x)
+        formatRawValueToDegrees(rawValue: MotionManager.shared.x)
     }
     var currentY: Double {
-        formatRawValueToDegrees(rawValue: self.y)
+        formatRawValueToDegrees(rawValue: MotionManager.shared.y)
     }
     
     var currentZ: Double {
-        formatRawValueToDegrees(rawValue: self.z)
+        formatRawValueToDegrees(rawValue: MotionManager.shared.z)
     }
     
     

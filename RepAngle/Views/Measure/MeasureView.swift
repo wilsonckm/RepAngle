@@ -12,46 +12,11 @@ struct MeasureView: View {
 
     var body: some View {
         
-//        if (abs(roundToTenth(value: radiansToDegrees(radians: motion.x)) - viewModel.endX) <= 6)
-//            && (abs(roundToTenth(value: radiansToDegrees(radians: motion.y)) - viewModel.endY) <= 6)
-//            && (abs(roundToTenth(value: radiansToDegrees(radians: motion.z)) - viewModel.endZ) <= 6) {
-//                    RoundedRectangle(cornerRadius: 25.0)
-//                        .fill(.green)
-//                } else {
-//                    RoundedRectangle(cornerRadius: 25.0)
-//                        .fill(.blue)
-//                }
-        
-        
-        
         Text("\(viewModel.currentDate)")
             .onReceive(viewModel.timer) { input in
                 viewModel.currentDate = input
                         }
         
-        
-        //        if (isWithinRange == (abs(roundToTenth(value: radiansToDegrees(radians: motion.x)) - endX) <= 6)
-        //                    && (abs(roundToTenth(value: radiansToDegrees(radians: motion.y)) - endY) <= 6)
-        //                    && (abs(roundToTenth(value: radiansToDegrees(radians: motion.z)) - endZ) <= 6)) {
-        //                    RoundedRectangle(cornerRadius: 25.0)
-        //                        .fill(.green)
-        //                } else {
-        //                    RoundedRectangle(cornerRadius: 25.0)
-        //                        .fill(.red)
-        //                }
-        
-//        RoundedRectangle(cornerRadius: 25.0)
-//            .fill(isWithinRange ? Color.green : Color.red)
-//            .onAppear {
-//                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-//                    updateRangeStatus()
-//                }
-                //            .onAppear {
-                //                isWithinRange = (abs(roundToTenth(value: radiansToDegrees(radians: motion.x)) - endX) <= 6)
-                //                             && (abs(roundToTenth(value: radiansToDegrees(radians: motion.y)) - endY) <= 6)
-                //                             && (abs(roundToTenth(value: radiansToDegrees(radians: motion.z)) - endZ) <= 6)
-                //            }
-                
                 VStack {
                     Text("Continuous Measurement")
                         .bold()

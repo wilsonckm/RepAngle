@@ -14,9 +14,9 @@ class MotionManager: ObservableObject {
     private var motionManager = CMMotionManager()
     
     //Raw Vales
-    @Published var x = 0.0
-    @Published var y = 0.0
-    @Published var z = 0.0
+    private var x = 0.0
+    private var y = 0.0
+    private var z = 0.0
     
     //Current formatted values in degress:
 //    @Published var currentX: Double = 0.0
@@ -48,7 +48,7 @@ class MotionManager: ObservableObject {
         motionManager.stopDeviceMotionUpdates()
     }
     
-//Formatted values:
+//Formatted values -- values to be used in other views:
         var currentX: Double {
             formatRawValueToDegrees(rawValue: x)
         }
@@ -61,19 +61,19 @@ class MotionManager: ObservableObject {
         }
     
 //Formula to format raw value into degrees to tenth place.
-    func formatRawValueToDegrees(rawValue: Double) -> Double {
+   private func formatRawValueToDegrees(rawValue: Double) -> Double {
         let degrees = radiansToDegrees(radians: rawValue)
         let rounded = roundToTenth(value: degrees)
         return rounded
     }
     
 //Raw to degree helper functions
-    func radiansToDegrees(radians: Double) -> Double {
+    private func radiansToDegrees(radians: Double) -> Double {
         return radians * 180 / .pi
     }
     
     
-    func roundToTenth(value: Double) -> Double {
+    private func roundToTenth(value: Double) -> Double {
         return (value * 10).rounded()/10
     }
     

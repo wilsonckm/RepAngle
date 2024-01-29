@@ -12,7 +12,7 @@ struct MeasureView: View {
     
 //    @State var isWithinRange: Bool = false
 //    @State var rangeAccuracy: Double = 2.0
-    @State private var rangeAccuracy = 10.0
+    @State private var rangeAccuracy = 5.0
     @State private var isEditing = false
     
     var body: some View {
@@ -21,7 +21,6 @@ struct MeasureView: View {
             VStack {
                 Text("Continuous Measurement")
                     .bold()
-                
                 Text("\(viewModel.currentX, specifier: "%.1f")")
                 Text("\(viewModel.currentY, specifier: "%.1f")")
                 Text("\(viewModel.currentZ, specifier: "%.1f")")
@@ -46,23 +45,6 @@ struct MeasureView: View {
                     .bold()
                 Text("\(viewModel.measurement, specifier: "%.1f")")
             }
-            VStack {
-                Text("Rep Count: \(viewModel.repCount)")
-            }
-            VStack {
-                Slider(
-                    value: $rangeAccuracy,
-                    in: 2...10,
-                    onEditingChanged: { editing in
-                        isEditing = editing
-                    }
-                )
-                Text("\(rangeAccuracy)")
-                RoundedRectangle(cornerRadius: 25.0)
-                    .frame(width: 100, height: 20)
-                    .foregroundStyle(viewModel.didReachRange(accuracy: rangeAccuracy) ? .green : .red )
-            }
-            
             VStack{
                 Button("Start Position"){
                     viewModel.initialX = viewModel.currentX

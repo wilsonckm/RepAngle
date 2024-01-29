@@ -20,8 +20,7 @@ class MeasureViewViewModel: ObservableObject {
     @Published var endX: Double = 0.0
     @Published var endY: Double = 0.0
     @Published var endZ: Double = 0.0
-    @Published var measurement: Double = 0
-    @Published var repCount: Int = 0
+    @Published var measurement: Double = 0.0
     
 //Timer required to force a SwiftUI view update for the continuous current X, Y, Z values. Previous attempts to use computed properties did not update
     init() {
@@ -36,17 +35,6 @@ class MeasureViewViewModel: ObservableObject {
         currentY = motionManager.currentY
         currentZ = motionManager.currentZ
       }
-    
-    // Check if value has reached end range
-    func didReachRange(accuracy: Double) -> Bool {
-        if (abs(currentX - endX) <= accuracy)
-            && (abs(currentY - endY) <= accuracy)
-            && (abs(currentZ - endZ) <= accuracy) {
-            return true
-        } else {
-            return false
-        }
-    }
     
 /*  Formatted degrees of continuous measurement.
     Computed property allows value to recaluclate every time it is accessed
@@ -94,11 +82,4 @@ class MeasureViewViewModel: ObservableObject {
         ]
         return differences.max() ?? 0.0
     }
-    
-    //To do:
-    func iterateRep() {
-        repCount += 1
-    }
-    
-    
 }

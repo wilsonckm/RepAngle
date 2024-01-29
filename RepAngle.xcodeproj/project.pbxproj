@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D1B5D3122B67363100ADEB86 /* TargetViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B5D3112B67363100ADEB86 /* TargetViewViewModel.swift */; };
 		D1D7CF9D2B62F8AC00945E01 /* RepAngleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */; };
 		D1D7CF9F2B62F8AC00945E01 /* MeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CF9E2B62F8AC00945E01 /* MeasureView.swift */; };
 		D1D7CFA12B62F8AD00945E01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1D7CFA02B62F8AD00945E01 /* Assets.xcassets */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D1B5D3112B67363100ADEB86 /* TargetViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetViewViewModel.swift; sourceTree = "<group>"; };
 		D1D7CF992B62F8AC00945E01 /* RepAngle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepAngle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepAngleApp.swift; sourceTree = "<group>"; };
 		D1D7CF9E2B62F8AC00945E01 /* MeasureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureView.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				D1D7CFB82B65FC9700945E01 /* TargetView.swift */,
+				D1B5D3112B67363100ADEB86 /* TargetViewViewModel.swift */,
 			);
 			path = Target;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 			files = (
 				D1D7CFAC2B64ACA900945E01 /* MeasureViewViewModel.swift in Sources */,
 				D1D7CFB62B64B3EA00945E01 /* MotionManager.swift in Sources */,
+				D1B5D3122B67363100ADEB86 /* TargetViewViewModel.swift in Sources */,
 				D1D7CFB32B64ADD000945E01 /* OnboardDetailView.swift in Sources */,
 				D1D7CFB12B64AD8E00945E01 /* OnboardingView.swift in Sources */,
 				D1D7CF9F2B62F8AC00945E01 /* MeasureView.swift in Sources */,

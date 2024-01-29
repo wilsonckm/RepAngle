@@ -18,6 +18,11 @@ class MotionManager: ObservableObject {
     @Published var y = 0.0
     @Published var z = 0.0
     
+    //Current formatted values in degress:
+//    @Published var currentX: Double = 0.0
+//    @Published var currentY: Double = 0.0
+//    @Published var currentZ: Double = 0.0
+    
     var isDeviceMotionActive: Bool {
             motionManager.isDeviceMotionActive
         }
@@ -26,7 +31,8 @@ class MotionManager: ObservableObject {
         //Captures data on an interval. Mainly for battery consumption.
         motionManager.deviceMotionUpdateInterval = 1/15
     }
-    
+
+//Start Function
     func startUpdates() {
                 motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
                     //Data is optional therefore necessary to unwrap
@@ -37,7 +43,41 @@ class MotionManager: ObservableObject {
                 }
         }
     
+//Stop Function
     func stopUpdates() {
         motionManager.stopDeviceMotionUpdates()
     }
+    
+//Formatted values:
+        var currentX: Double {
+            formatRawValueToDegrees(rawValue: x)
+        }
+        var currentY: Double {
+            formatRawValueToDegrees(rawValue: y)
+        }
+    
+        var currentZ: Double {
+            formatRawValueToDegrees(rawValue: z)
+        }
+    
+//Formula to format raw value into degrees to tenth place.
+    func formatRawValueToDegrees(rawValue: Double) -> Double {
+        let degrees = radiansToDegrees(radians: rawValue)
+        let rounded = roundToTenth(value: degrees)
+        return rounded
+    }
+    
+//Raw to degree helper functions
+    func radiansToDegrees(radians: Double) -> Double {
+        return radians * 180 / .pi
+    }
+    
+    
+    func roundToTenth(value: Double) -> Double {
+        return (value * 10).rounded()/10
+    }
+    
+    
+    
+    
 }

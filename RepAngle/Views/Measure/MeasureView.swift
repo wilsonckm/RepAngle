@@ -21,6 +21,7 @@ struct MeasureView: View {
             VStack {
                 Text("Continuous Measurement")
                     .bold()
+                
                 Text("\(viewModel.currentX, specifier: "%.1f")")
                 Text("\(viewModel.currentY, specifier: "%.1f")")
                 Text("\(viewModel.currentZ, specifier: "%.1f")")
@@ -48,7 +49,6 @@ struct MeasureView: View {
             VStack {
                 Text("Rep Count: \(viewModel.repCount)")
             }
-            
             VStack {
                 Slider(
                     value: $rangeAccuracy,

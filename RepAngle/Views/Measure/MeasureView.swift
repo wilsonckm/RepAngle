@@ -10,15 +10,12 @@ import SwiftUI
 struct MeasureView: View {
     @StateObject private var viewModel = MeasureViewViewModel()
     
+//    @State var isWithinRange: Bool = false
+//    @State var rangeAccuracy: Double = 2.0
+    @State private var rangeAccuracy = 10.0
+    @State private var isEditing = false
+    
     var body: some View {
-        //
-        //        Text("\(viewModel.currentDate)")
-        //            .onReceive(viewModel.timer) { input in
-        //                viewModel.currentDate = input
-        //                        }
-        
-        
-        //
         VStack {
             Text("Device Motion Active: \(viewModel.isMotionActive.description)")
             VStack {
@@ -28,9 +25,6 @@ struct MeasureView: View {
                 Text("\(viewModel.currentY, specifier: "%.1f")")
                 Text("\(viewModel.currentZ, specifier: "%.1f")")
             }
-            .padding()
-            
-            
             VStack {
                 Text("Starting Position")
                     .bold()
@@ -38,9 +32,6 @@ struct MeasureView: View {
                 Text("\(viewModel.initialY, specifier: "%.1f")")
                 Text("\(viewModel.initialZ, specifier: "%.1f")")
             }
-            .padding()
-            
-            
             VStack {
                 Text("End Position")
                     .bold()
@@ -49,16 +40,27 @@ struct MeasureView: View {
                 Text("\(viewModel.endZ, specifier: "%.1f")")
                 
             }
-            .padding()
-            
             VStack {
                 Text("Measurement")
                     .bold()
                 Text("\(viewModel.measurement, specifier: "%.1f")")
             }
-            
             VStack {
                 Text("Rep Count: \(viewModel.repCount)")
+            }
+            
+            VStack {
+                Slider(
+                    value: $rangeAccuracy,
+                    in: 2...10,
+                    onEditingChanged: { editing in
+                        isEditing = editing
+                    }
+                )
+                Text("\(rangeAccuracy)")
+                RoundedRectangle(cornerRadius: 25.0)
+                    .frame(width: 100, height: 20)
+                    .foregroundStyle(viewModel.didReachRange(accuracy: rangeAccuracy) ? .green : .red )
             }
             
             VStack{
@@ -69,7 +71,6 @@ struct MeasureView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .foregroundStyle(.white)
-                .padding()
                 .tint(.green)
                 
                 Button("End Position"){
@@ -79,7 +80,6 @@ struct MeasureView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .foregroundStyle(.white)
-                .padding()
                 .tint(.red)
                 
                 Button("Measure"){
@@ -87,7 +87,6 @@ struct MeasureView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .foregroundStyle(.white)
-                .padding()
                 .tint(.blue)
             }
             Button("Start CoreMotion"){
@@ -95,7 +94,6 @@ struct MeasureView: View {
             }
             .buttonStyle(.borderedProminent)
             .foregroundStyle(.white)
-            .padding()
             .tint(.blue)
             
             Button("Stop CoreMotion"){
@@ -103,11 +101,10 @@ struct MeasureView: View {
             }
             .buttonStyle(.borderedProminent)
             .foregroundStyle(.white)
-            .padding()
+
             .tint(.blue)
-            
         }
-        
+        .padding()
     }
 }
     //#Preview {

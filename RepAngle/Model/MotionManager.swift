@@ -9,6 +9,7 @@ import Foundation
 import CoreMotion
 
 class MotionManager: ObservableObject {
+    //Motion Manager declared as a singleton and accessable globally
     static let shared = MotionManager()
     private var motionManager = CMMotionManager()
     

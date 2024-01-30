@@ -39,17 +39,18 @@ class MotionManager: ObservableObject {
             self?.z = motion.yaw
         }
     }
-    
-//Start Function -- Removed -- User will be on either screens which will need Motion Manager. Prevents potential misuse by forgetting to manually startMotionUpdates
-//    func startUpdates() {
-//                motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
-//                    //Data is optional therefore necessary to unwrap
-//                    guard let motion = data?.attitude else { return }
-//                    self?.x = motion.pitch
-//                    self?.y = motion.roll
-//                    self?.z = motion.yaw
-//                }
-//        }
+// -- Removed start/stop option -- User will be on either screens which will need Motion Manager. Prevents potential misuse by forgetting to manually startMotionUpdates
+
+//Start Function
+    func startUpdates() {
+                motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
+                    //Data is optional therefore necessary to unwrap
+                    guard let motion = data?.attitude else { return }
+                    self?.x = motion.pitch
+                    self?.y = motion.roll
+                    self?.z = motion.yaw
+                }
+        }
     
 //Stop Function
     func stopUpdates() {

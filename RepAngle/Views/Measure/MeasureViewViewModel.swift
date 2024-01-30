@@ -60,13 +60,13 @@ class MeasureViewViewModel: ObservableObject {
     }
     
     //Manual control to start and stop --> Prevents battery waste --> Removed to prevent user from forgetting to manually start Motion Manager
-//    func startMotionUpdates() {
-//           motionManager.startUpdates()
-//       }
+    func startMotionUpdates() {
+           motionManager.startUpdates()
+       }
 
-//    func stopMotionUpdates() {
-//           motionManager.stopUpdates()
-//       }
+    func stopMotionUpdates() {
+           motionManager.stopUpdates()
+       }
     
 /*  Formula to return the greatest difference between initial and end value.
  

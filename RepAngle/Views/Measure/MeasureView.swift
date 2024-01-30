@@ -46,6 +46,7 @@ struct MeasureView: View {
                 Button(isMeasuring ? "End Position" : "Start Position"){
                     
                     if isMeasuring == false {
+//                        viewModel.startMotionUpdates()
                         viewModel.initialX = viewModel.currentX
                         viewModel.initialY = viewModel.currentY
                         viewModel.initialZ = viewModel.currentZ
@@ -70,6 +71,9 @@ struct MeasureView: View {
             }
         }
         .padding()
+//        .onDisappear {
+//            viewModel.stopMotionUpdates()
+//        }
     }
 }
     //#Preview {

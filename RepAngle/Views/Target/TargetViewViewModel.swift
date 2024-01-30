@@ -6,6 +6,9 @@
 //
 
 import Foundation
+//For haptic feedback
+import UIKit
+
 
 
 class TargetViewViewModel: ObservableObject {
@@ -43,19 +46,28 @@ class TargetViewViewModel: ObservableObject {
         motionManager.isDeviceMotionActive
     }
     
-    func calculateGreatestDifference(initialValueX: Double,
-                                     endValueX: Double,
-                                     initialValueY: Double,
-                                     endValueY: Double,
-                                     initialValueZ: Double,
-                                     endValueZ: Double)-> Double{
-            let differences = [
-            abs(initialValueX - endValueX),
-            abs(initialValueY - endValueY),
-            abs(initialValueZ - endValueZ)
-        ]
-        return differences.max() ?? 0.0
-    }
+        func startMotionUpdates() {
+               motionManager.startUpdates()
+           }
+
+        func stopMotionUpdates() {
+               motionManager.stopUpdates()
+           }
+    
+//    func calculateGreatestDifference(initialValueX: Double,
+//                                     endValueX: Double,
+//                                     initialValueY: Double,
+//                                     endValueY: Double,
+//                                     initialValueZ: Double,
+//                                     endValueZ: Double)-> Double{
+//            let differences = [
+//            abs(initialValueX - endValueX),
+//            abs(initialValueY - endValueY),
+//            abs(initialValueZ - endValueZ)
+//        ]
+//        return differences.max() ?? 0.0
+//    }
+    
     
 //    func greatestCurrentValue() -> Double {
 //        let greatestValue = [
@@ -79,13 +91,21 @@ class TargetViewViewModel: ObservableObject {
 //            return ("", 0.0)
 //        }
 //    }
-
+    
+//Haptic Feedback
+    func vibrate() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+    }
     
     // Check if value has reached the same position given a certain range/inaccuracy
     func didReachFreeTarget(accuracy: Double) -> Bool {
-        if (abs(currentX - endTargetX) <= accuracy)
+        //Added != 0.0 to prevent vibrate on reset.
+        if endTargetX != 0.0 && endTargetY != 0.0 && endTargetZ != 0.0
+            && (abs(currentX - endTargetX) <= accuracy)
             && (abs(currentY - endTargetY) <= accuracy)
             && (abs(currentZ - endTargetZ) <= accuracy) {
+            vibrate()
             return true
         } else {
             return false

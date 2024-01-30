@@ -12,13 +12,14 @@ struct TargetView: View {
     @State private var rangeAccuracy = 10.0
     @State private var isEditing = false
     @State private var isResetToggle = false
+    @State private var isPauseToggle = false
     
     var body: some View {
         VStack {
             Text("Device Motion Active: \(viewModel.isMotionActive.description)")
             ZStack {
                 RoundedRectangle(cornerRadius: 25.0)
-                    .frame(height: 200)
+                    .frame(height: 400)
                     .foregroundStyle(viewModel.didReachFreeTarget(accuracy: rangeAccuracy) ? .green : .red )
                 VStack {
                     Text("\(viewModel.measurement, specifier: "%.1f")")
@@ -50,35 +51,30 @@ struct TargetView: View {
 //
 //                    }
 //            }
-            VStack {
-                            HStack {
-                                Text("Current")
-                                Text("\(viewModel.currentX, specifier: "%.1f")")
-                                Text("\(viewModel.currentY, specifier: "%.1f")")
-                                Text("\(viewModel.currentZ, specifier: "%.1f")")
-                            }
-                        }
-            VStack {
-                            HStack {
-                                Text("Initial")
-                                Text("\(viewModel.initialTargetX, specifier: "%.1f")")
-                                Text("\(viewModel.initialTargetY, specifier: "%.1f")")
-                                Text("\(viewModel.initialTargetZ, specifier: "%.1f")")
-                            }
-                        }
-            VStack {
-                            HStack {
-                                Text("End")
-                                Text("\(viewModel.endTargetX, specifier: "%.1f")")
-                                Text("\(viewModel.endTargetY, specifier: "%.1f")")
-                                Text("\(viewModel.endTargetZ, specifier: "%.1f")")
-                            }
-                        }
 //            VStack {
-//                HStack {
-//                    Text("\(viewModel.greatestCurrentValue())")
-//                }
-//            }
+//                            HStack {
+//                                Text("Current")
+//                                Text("\(viewModel.currentX, specifier: "%.1f")")
+//                                Text("\(viewModel.currentY, specifier: "%.1f")")
+//                                Text("\(viewModel.currentZ, specifier: "%.1f")")
+//                            }
+//                        }
+//            VStack {
+//                            HStack {
+//                                Text("Initial")
+//                                Text("\(viewModel.initialTargetX, specifier: "%.1f")")
+//                                Text("\(viewModel.initialTargetY, specifier: "%.1f")")
+//                                Text("\(viewModel.initialTargetZ, specifier: "%.1f")")
+//                            }
+//                        }
+//            VStack {
+//                            HStack {
+//                                Text("End")
+//                                Text("\(viewModel.endTargetX, specifier: "%.1f")")
+//                                Text("\(viewModel.endTargetY, specifier: "%.1f")")
+//                                Text("\(viewModel.endTargetZ, specifier: "%.1f")")
+//                            }
+//                        }
             VStack {
                 Slider(
                     value: $rangeAccuracy,
@@ -92,23 +88,15 @@ struct TargetView: View {
             .padding()
             VStack {
                 HStack {
-//                    Button("Target Start Range") {
-//                        viewModel.initialTargetX = viewModel.currentX
-//                        viewModel.initialTargetY = viewModel.currentY
-//                        viewModel.initialTargetZ = viewModel.currentZ
-//                        isFreeTargetToggle.toggle()
-//                    }
-//                    .buttonStyle(.borderedProminent)
-//                    .foregroundStyle(.white)
-//                    .tint(.blue)
-                    Button(isResetToggle ? "Free Target" : "Reset") {
-                        
+                    Button(isResetToggle ? "Reset" : "Set Target") {
+//                        viewModel.startMotionUpdates()
                         if isResetToggle == false {
                             viewModel.endTargetX = viewModel.currentX
                             viewModel.endTargetY = viewModel.currentY
                             viewModel.endTargetZ = viewModel.currentZ
                             isResetToggle = true
                         } else {
+//                            viewModel.stopMotionUpdates()
                             viewModel.initialTargetX = 0.0
                             viewModel.initialTargetY = 0.0
                             viewModel.initialTargetZ = 0.0
@@ -124,6 +112,20 @@ struct TargetView: View {
                     .foregroundStyle(.white)
                     .tint(.blue)
                 }
+//                HStack {
+//                    Button(isPauseToggle ? "Resume" : "Pause") {
+//                        if isPauseToggle == false {
+//                            viewModel.stopMotionUpdates()
+//                            isPauseToggle.toggle()
+//                        } else {
+//                            viewModel.startMotionUpdates()
+//                            isPauseToggle.toggle()
+//                        }
+//                    }
+//                    .buttonStyle(.borderedProminent)
+//                    .foregroundStyle(.white)
+//                    .tint(.blue)
+//                }
                 //To do:
 //                HStack {
 //                    Button("15 deg"){

@@ -14,7 +14,7 @@ struct RepAngleApp: App {
     
     var body: some Scene {
         WindowGroup {
-            MeasureView() 
+           HomeView()
                 .fullScreenCover(isPresented: $needsOnboarding) {
                 needsOnboarding = false
             } content: {

@@ -35,7 +35,6 @@ class MeasureViewViewModel: ObservableObject {
         currentY = motionManager.currentY
         currentZ = motionManager.currentZ
       }
-    
 /*  Formatted degrees of continuous measurement.
     Computed property allows value to recaluclate every time it is accessed
     Always using current value of self
@@ -60,26 +59,46 @@ class MeasureViewViewModel: ObservableObject {
         motionManager.isDeviceMotionActive
     }
     
-    //Manual control to start and stop --> Prevents battery waste
-    func startMotionUpdates() {
-           motionManager.startUpdates()
-       }
+    //Manual control to start and stop --> Prevents battery waste --> Removed to prevent user from forgetting to manually start Motion Manager
+//    func startMotionUpdates() {
+//           motionManager.startUpdates()
+//       }
 
-    func stopMotionUpdates() {
-           motionManager.stopUpdates()
-       }
+//    func stopMotionUpdates() {
+//           motionManager.stopUpdates()
+//       }
     
 /*  Formula to return the greatest difference between initial and end value.
  
     Use case: To allow user to measure range of motion of a joint
     Rationale: It is anticipated that the user would move most in a direction they would like to measure
+ 
+   Removed X axis/pitch for ease of use and prevent miscalculation of measurement. Would prevent phone from pitching towards/away user. Therefore measurement can only be measured in roll or yaw.
+  
+  "Pitch is a rotation around a lateral axis that passes through the device from side to side."
+  
+  "Roll is a rotation around a longitudinal axis that passes through the device from its top to bottom."
+                 
+  
+  "Yaw is a rotation around an axis that runs vertically through the device. It is perpendicular to the body of the device, with its origin at the center of gravity and directed toward the bottom of the device."
+ 
  */
-    func calculateGreatestDifference() -> Double {
-        let differences = [
-            abs(initialX - endX),
-            abs(initialY - endY),
-            abs(initialZ - endZ)
+    func calculateGreatestDifference(initialValueX: Double,
+                                     endValueX: Double,
+                                     initialValueY: Double,
+                                     endValueY: Double,
+                                     initialValueZ: Double,
+                                     endValueZ: Double)-> Double {
+        
+            let differences = [
+//          abs(initialValueX - endValueX),
+            abs(initialValueY - endValueY),
+            abs(initialValueZ - endValueZ)
         ]
         return differences.max() ?? 0.0
+    }
+    
+    func subtract180(value: Double) -> Double {
+        return 180 - value
     }
 }

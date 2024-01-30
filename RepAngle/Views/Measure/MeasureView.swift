@@ -9,11 +9,7 @@ import SwiftUI
 
 struct MeasureView: View {
     @StateObject private var viewModel = MeasureViewViewModel()
-    
-//    @State var isWithinRange: Bool = false
-//    @State var rangeAccuracy: Double = 2.0
-    @State private var rangeAccuracy = 5.0
-    @State private var isEditing = false
+    @State private var isMeasuring = false
     
     var body: some View {
         VStack {
@@ -44,47 +40,34 @@ struct MeasureView: View {
                 Text("Measurement")
                     .bold()
                 Text("\(viewModel.measurement, specifier: "%.1f")")
+                Text("\(viewModel.subtract180(value: viewModel.measurement), specifier: "%.1f")")
             }
             VStack{
-                Button("Start Position"){
-                    viewModel.initialX = viewModel.currentX
-                    viewModel.initialY = viewModel.currentY
-                    viewModel.initialZ = viewModel.currentZ
+                Button(isMeasuring ? "End Position" : "Start Position"){
+                    
+                    if isMeasuring == false {
+                        viewModel.initialX = viewModel.currentX
+                        viewModel.initialY = viewModel.currentY
+                        viewModel.initialZ = viewModel.currentZ
+                        isMeasuring.toggle()
+                    } else {
+                        viewModel.endX = viewModel.currentX
+                        viewModel.endY = viewModel.currentY
+                        viewModel.endZ = viewModel.currentZ
+                        viewModel.measurement = viewModel.calculateGreatestDifference(
+                            initialValueX: viewModel.initialX,
+                            endValueX: viewModel.endX,
+                            initialValueY: viewModel.initialY,
+                            endValueY: viewModel.endY,
+                            initialValueZ: viewModel.initialZ,
+                            endValueZ: viewModel.endZ)
+                        isMeasuring.toggle()
+                    }
                 }
                 .buttonStyle(.borderedProminent)
                 .foregroundStyle(.white)
-                .tint(.green)
-                
-                Button("End Position"){
-                    viewModel.endX = viewModel.currentX
-                    viewModel.endY = viewModel.currentY
-                    viewModel.endZ = viewModel.currentZ
-                }
-                .buttonStyle(.borderedProminent)
-                .foregroundStyle(.white)
-                .tint(.red)
-                
-                Button("Measure"){
-                    viewModel.measurement = viewModel.calculateGreatestDifference()
-                }
-                .buttonStyle(.borderedProminent)
-                .foregroundStyle(.white)
-                .tint(.blue)
+                .tint(isMeasuring ? .red : .green)
             }
-            Button("Start CoreMotion"){
-                viewModel.startMotionUpdates()
-            }
-            .buttonStyle(.borderedProminent)
-            .foregroundStyle(.white)
-            .tint(.blue)
-            
-            Button("Stop CoreMotion"){
-                viewModel.stopMotionUpdates()
-            }
-            .buttonStyle(.borderedProminent)
-            .foregroundStyle(.white)
-
-            .tint(.blue)
         }
         .padding()
     }

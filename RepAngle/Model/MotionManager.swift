@@ -30,18 +30,26 @@ class MotionManager: ObservableObject {
     init() {
         //Captures data on an interval. Mainly for battery consumption.
         motionManager.deviceMotionUpdateInterval = 1/15
-    }
-
-//Start Function
-    func startUpdates() {
-                motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
-                    //Data is optional therefore necessary to unwrap
-                    guard let motion = data?.attitude else { return }
-                    self?.x = motion.roll
-                    self?.y = motion.pitch
-                    self?.z = motion.yaw
-                }
+        
+        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
+            //Data is optional therefore necessary to unwrap
+            guard let motion = data?.attitude else { return }
+            self?.x = motion.pitch
+            self?.y = motion.roll
+            self?.z = motion.yaw
         }
+    }
+    
+//Start Function -- Removed -- User will be on either screens which will need Motion Manager. Prevents potential misuse by forgetting to manually startMotionUpdates
+//    func startUpdates() {
+//                motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
+//                    //Data is optional therefore necessary to unwrap
+//                    guard let motion = data?.attitude else { return }
+//                    self?.x = motion.pitch
+//                    self?.y = motion.roll
+//                    self?.z = motion.yaw
+//                }
+//        }
     
 //Stop Function
     func stopUpdates() {

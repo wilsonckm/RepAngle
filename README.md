@@ -32,6 +32,7 @@ This allows a user to measure the range of motion in degrees along the Pitch/X A
 "Roll/Y is a rotation around a longitudinal axis that passes through the device from its top to bottom."
 
 "Yaw/Z is a rotation around an axis that runs vertically through the device. It is perpendicular to the body of the device, with its origin at the center of gravity and directed toward the bottom of the device."
+
 <img width="225" alt="Screenshot 2024-01-31 at 12 16 39 PM" src="https://github.com/wilsonckm/RepAngle/assets/133422035/13df05d5-e294-4f22-99a5-d68c9e4aea57">
 
 -Target

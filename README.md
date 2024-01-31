@@ -14,11 +14,13 @@ The Goniometer App is a modern solution for measuring joint angles using the mot
 - Project must be run on device and not a simulator.
 
 ## Usage
-The purpose of this app is to provide a digital tool to capture joint range of motion. Main features are:
+The purpose of this app is to provide a digital tool to capture joint range of motion with the intention of providing fitness and sport professionals to perform baseline assessments and monitor progress with greater ease.  
+
+Main features are:
 -Measure
 This allows a user to measure the range of motion in degrees along the Pitch/X Axis and Yaw/Z Axis of the phone.
 
-Per Apple Documentation, some helpful definitions are below: 
+###Per Apple Documentation, some helpful definitions are below: 
 "Pitch/X is a rotation around a lateral axis that passes through the device from side to side."
 
 "Roll/Y is a rotation around a longitudinal axis that passes through the device from its top to bottom."
@@ -26,6 +28,9 @@ Per Apple Documentation, some helpful definitions are below:
 "Yaw/Z is a rotation around an axis that runs vertically through the device. It is perpendicular to the body of the device, with its origin at the center of gravity and directed toward the bottom of the device."
 
 -Target
+Allows the user to set a target postion in 3D space. Alerts the user when 3D space is reached and counts the number of times the user has reached that position. Ideally used with a iPhone strap to allow the user to attach to movement limb.
+
+Slider bar has been provided to allow for a range of acceptance/accuracy for increased userability. 
 
 ## Contributing
 Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.

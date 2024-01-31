@@ -1,6 +1,6 @@
 # RepAngle: Goniometer App
 ## Description
-The Goniometer App is a modern solution for measuring joint angles using the motion sensors in smartphones. Designed for both professionals and fitness enthusiasts, this app utilizes the device's built-in gyroscope to provide accurate and easy-to-read measurements in degrees.
+The RepAngle App is a modern solution for measuring joint angles using the motion sensors in smartphones. Designed for both professionals and fitness enthusiasts, this app utilizes the device's built-in gyroscope to provide accurate and easy-to-read measurements in degrees.
 
 ### Technologies Used
 - CoreMotion Framework

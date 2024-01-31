@@ -8,7 +8,8 @@
 import Foundation
 //For haptic feedback
 import UIKit
-
+//For increased Vibrate feedback
+import AudioToolbox
 
 
 class TargetViewViewModel: ObservableObject {
@@ -25,10 +26,11 @@ class TargetViewViewModel: ObservableObject {
     @Published var endTargetX: Double = 0.0
     @Published var endTargetY: Double = 0.0
     @Published var endTargetZ: Double = 0.0
-    @Published var measurement: Double = 0.0
-    @Published var setRangeX: Double = 0.0
-    @Published var setRangeY: Double = 0.0
-    @Published var setRangeZ: Double = 0.0
+//    @Published var measurement: Double = 0.0
+//    @Published var setRangeX: Double = 0.0
+//    @Published var setRangeY: Double = 0.0
+//    @Published var setRangeZ: Double = 0.0
+    @Published var repCount: Double = 0.0
 
     init() {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
@@ -92,13 +94,22 @@ class TargetViewViewModel: ObservableObject {
 //        }
 //    }
     
-//Haptic Feedback
+//Haptic Feedback --> Too weak. Updating to use AudioToolbox
     func vibrate() {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
+//        let generator = UIImpactFeedbackGenerator(style: .heavy)
+//        generator.impactOccurred()
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
     
-    // Check if value has reached the same position given a certain range/inaccuracy
+//Count Rep
+    func addRep(){
+        if endTargetX != 0.0 && endTargetY != 0.0 && endTargetZ != 0.0 {
+            //not 1 to to prevent iteration on true/false change. Additionally, may potentially be used to measure partial reps?
+            repCount += 0.4999
+        }
+    }
+    
+// Check if value has reached the same position given a certain range/inaccuracy
     func didReachFreeTarget(accuracy: Double) -> Bool {
         //Added != 0.0 to prevent vibrate on reset.
         if endTargetX != 0.0 && endTargetY != 0.0 && endTargetZ != 0.0
@@ -111,46 +122,23 @@ class TargetViewViewModel: ObservableObject {
             return false
         }
     }
-
-    //Check if current value has moved a given range based on intial and end targets
     
+//Set Target Range
     func setTargetRange() {
-        setRangeX = initialTargetX - endTargetX
-        setRangeY = initialTargetY - endTargetY
-        setRangeZ = initialTargetZ - endTargetZ
+        endTargetX = currentX
+        endTargetY = currentY
+        endTargetZ = currentZ
     }
     
-    func largestRange() -> Double {
-        let largestNumber = [
-            abs(setRangeX),
-            abs(setRangeY),
-            abs(setRangeZ)
-        ]
-        return largestNumber.max() ?? 0.0
+//Reset
+    func reset() {
+        initialTargetX = 0.0
+        initialTargetY = 0.0
+        initialTargetZ = 0.0
+        endTargetX = 0.0
+        endTargetY = 0.0
+        endTargetZ = 0.0
+        repCount = 0
     }
     
-//Only Considers linear movement
-//    func didReachTargetRange(accuracy: Double) -> Bool {
-//        let targetX = initialTargetX + setRangeX
-//        let targetY = initialTargetY + setRangeY
-//        let targetZ = initialTargetZ + setRangeZ
-//
-//        return (abs(currentX - targetX) <= accuracy)
-//            && (abs(currentY - targetY) <= accuracy)
-//            && (abs(currentZ - targetZ) <= accuracy)
-//    }
-
-
-    
-    func withinTargetRange(accuracy: Double) -> Bool {
-        
-        return (abs(currentX - setRangeX) >= accuracy)
-            || (abs(currentY - setRangeY) >= accuracy)
-            || (abs(currentZ - setRangeZ) >= accuracy)
-    }
-    
-    //To do:
-//    func iterateRep() {
-//        repCount += 1
-//    }
 }

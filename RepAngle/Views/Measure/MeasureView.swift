@@ -8,168 +8,74 @@
 import SwiftUI
 
 struct MeasureView: View {
-    @StateObject private var motion = MotionManager()
-    @State private var currentX: Double = 0.0
-    @State private var currentY: Double = 0.0
-    @State private var currentZ: Double = 0.0
-    @State private var initialX: Double = 0.0
-    @State private var initialY: Double = 0.0
-    @State private var initialZ: Double = 0.0
-    @State private var endX: Double = 0.0
-    @State private var endY: Double = 0.0
-    @State private var endZ: Double = 0.0
-    @State private var measurement: Double = 0
-    
-    @State private var isWithinRange: Bool = false
-    @State private var repCount: Int = 0
-    
-    @State private var currentDate = Date.now
-    let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-
+    @StateObject private var viewModel = MeasureViewViewModel()
+    @State private var isMeasuring = false
     
     var body: some View {
-        
-                if (abs(roundToTenth(value: radiansToDegrees(radians: motion.x)) - endX) <= 6)
-                    && (abs(roundToTenth(value: radiansToDegrees(radians: motion.y)) - endY) <= 6)
-                    && (abs(roundToTenth(value: radiansToDegrees(radians: motion.z)) - endZ) <= 6) {
-                    RoundedRectangle(cornerRadius: 25.0)
-                        .fill(.green)
-                } else {
-                    RoundedRectangle(cornerRadius: 25.0)
-                        .fill(.blue)
-                }
-        Text("\(currentDate)")
-            .onReceive(timer) { input in
-                            currentDate = input
-                        }
-        
-        
-        //        if (isWithinRange == (abs(roundToTenth(value: radiansToDegrees(radians: motion.x)) - endX) <= 6)
-        //                    && (abs(roundToTenth(value: radiansToDegrees(radians: motion.y)) - endY) <= 6)
-        //                    && (abs(roundToTenth(value: radiansToDegrees(radians: motion.z)) - endZ) <= 6)) {
-        //                    RoundedRectangle(cornerRadius: 25.0)
-        //                        .fill(.green)
-        //                } else {
-        //                    RoundedRectangle(cornerRadius: 25.0)
-        //                        .fill(.red)
-        //                }
-        
-//        RoundedRectangle(cornerRadius: 25.0)
-//            .fill(isWithinRange ? Color.green : Color.red)
-//            .onAppear {
-//                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-//                    updateRangeStatus()
-//                }
-                //            .onAppear {
-                //                isWithinRange = (abs(roundToTenth(value: radiansToDegrees(radians: motion.x)) - endX) <= 6)
-                //                             && (abs(roundToTenth(value: radiansToDegrees(radians: motion.y)) - endY) <= 6)
-                //                             && (abs(roundToTenth(value: radiansToDegrees(radians: motion.z)) - endZ) <= 6)
-                //            }
-                
-                VStack {
-                    Text("Continuous Measurement")
-                        .bold()
-                    Text("\(roundToTenth(value:radiansToDegrees(radians:motion.x)), specifier: "%.2f")")
-                    Text("\(roundToTenth(value:radiansToDegrees(radians:motion.y)), specifier: "%.2f")")
-                    Text("\(roundToTenth(value:radiansToDegrees(radians:motion.z)), specifier: "%.2f")")
-                }
-                .padding()
-                
-                
-                VStack {
-                    Text("Starting Position")
-                        .bold()
-                    Text("\(initialX, specifier: "%.2f")")
-                    Text("\(initialY, specifier: "%.2f")")
-                    Text("\(initialZ, specifier: "%.2f")")
-                }
-                .padding()
-                
-                
-                VStack {
-                    Text("End Position")
-                        .bold()
-                    Text("\(endX, specifier: "%.2f")")
-                    Text("\(endY, specifier: "%.2f")")
-                    Text("\(endZ, specifier: "%.2f")")
-                    
-                }
-                .padding()
-                
-                VStack {
-                    Text("Measurement")
-                        .bold()
-                    Text("\(measurement, specifier: "%.2f")")
-                }
-                
-                VStack {
-                    Text("Rep Count: \(repCount)")
-                }
-                
-                VStack{
-                    Button("Start Position"){
-                        initialX = roundToTenth(value:radiansToDegrees(radians:motion.x))
-                        initialY = roundToTenth(value:radiansToDegrees(radians:motion.y))
-                        initialZ = roundToTenth(value:radiansToDegrees(radians:motion.z))
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .foregroundStyle(.white)
-                    .padding()
-                    .tint(.green)
-                    
-                    Button("End Position"){
-                        endX = roundToTenth(value:radiansToDegrees(radians:motion.x))
-                        endY = roundToTenth(value:radiansToDegrees(radians:motion.y))
-                        endZ = roundToTenth(value:radiansToDegrees(radians:motion.z))
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .foregroundStyle(.white)
-                    .padding()
-                    .tint(.red)
-                    
-                    Button("Measure"){
-                        measurement = calculateGreatestDifference()
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .foregroundStyle(.white)
-                    .padding()
-                    .tint(.blue)
-                }
+        VStack {
+            Text("Device Motion Active: \(viewModel.isMotionActive.description)")
+            VStack {
+                Text("Continuous Measurement")
+                    .bold()
+                Text("\(viewModel.currentX, specifier: "%.1f")")
+                Text("\(viewModel.currentY, specifier: "%.1f")")
+                Text("\(viewModel.currentZ, specifier: "%.1f")")
             }
-        func calculateGreatestDifference() -> Double {
-            let differences = [
-                abs(initialX - endX),
-                abs(initialY - endY),
-                abs(initialZ - endZ)
-            ]
-            return differences.max() ?? 0.0
+            VStack {
+                Text("Starting Position")
+                    .bold()
+                Text("\(viewModel.initialX, specifier: "%.1f")")
+                Text("\(viewModel.initialY, specifier: "%.1f")")
+                Text("\(viewModel.initialZ, specifier: "%.1f")")
+            }
+            VStack {
+                Text("End Position")
+                    .bold()
+                Text("\(viewModel.endX, specifier: "%.1f")")
+                Text("\(viewModel.endY, specifier: "%.1f")")
+                Text("\(viewModel.endZ, specifier: "%.1f")")
+                
+            }
+            VStack {
+                Text("Measurement")
+                    .bold()
+                Text("\(viewModel.measurement, specifier: "%.1f")")
+                Text("\(viewModel.subtract180(value: viewModel.measurement), specifier: "%.1f")")
+            }
+            VStack{
+                Button(isMeasuring ? "End Position" : "Start Position"){
+                    
+                    if isMeasuring == false {
+//                        viewModel.startMotionUpdates()
+                        viewModel.initialX = viewModel.currentX
+                        viewModel.initialY = viewModel.currentY
+                        viewModel.initialZ = viewModel.currentZ
+                        isMeasuring.toggle()
+                    } else {
+                        viewModel.endX = viewModel.currentX
+                        viewModel.endY = viewModel.currentY
+                        viewModel.endZ = viewModel.currentZ
+                        viewModel.measurement = viewModel.calculateGreatestDifference(
+                            initialValueX: viewModel.initialX,
+                            endValueX: viewModel.endX,
+                            initialValueY: viewModel.initialY,
+                            endValueY: viewModel.endY,
+                            initialValueZ: viewModel.initialZ,
+                            endValueZ: viewModel.endZ)
+                        isMeasuring.toggle()
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .foregroundStyle(.white)
+                .tint(isMeasuring ? .red : .green)
+            }
         }
-        
-        func iterateRep() {
-            repCount += 1
-        }
-        
-        func radiansToDegrees(radians: Double) -> Double {
-            return radians * 180 / .pi
-        }
-        
-        func roundToTenth(value: Double) -> Double {
-            return (value * 10).rounded()/10
-        }
-        
-        func updateRangeStatus() {
-            // Update this to fetch real-time gyroscope data
-            let currentX = roundToTenth(value: radiansToDegrees(radians: motion.x))
-            let currentY = roundToTenth(value: radiansToDegrees(radians: motion.y))
-            let currentZ = roundToTenth(value: radiansToDegrees(radians: motion.z))
-            
-            isWithinRange = (abs(currentX - endX) <= 6)
-            && (abs(currentY - endY) <= 6)
-            && (abs(currentZ - endZ) <= 6)
-        }
-        
+        .padding()
+//        .onDisappear {
+//            viewModel.stopMotionUpdates()
+//        }
     }
-    
+}
     //#Preview {
     //    ContentView()
     //}

@@ -25,20 +25,19 @@ class MotionManager: ObservableObject {
     init() {
         //Captures data on an interval. Mainly for battery consumption.
         motionManager.deviceMotionUpdateInterval = 1/15
-        
-        motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: .main ) { [weak self] data, error in
+        // initialize on startup
+        motionManager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical, to: .main ) { [weak self] data, error in
             //Data is optional therefore necessary to unwrap
             guard let motion = data?.attitude else { return }
             self?.x = motion.pitch
             self?.y = motion.roll
             self?.z = motion.yaw
-//            self?.xArbitrary = motion.
         }
     }
 
-//Start Function
+//Start function that doubles as a force recalibration function as we are using xAritraryCorrectedZVertical.
     func startUpdates() {
-                motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
+                motionManager.startDeviceMotionUpdates(using: .xArbitraryCorrectedZVertical, to: .main) { [weak self] data, error in
                     //Data is optional therefore necessary to unwrap
                     guard let motion = data?.attitude else { return }
                     self?.x = motion.pitch

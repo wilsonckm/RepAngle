@@ -121,16 +121,16 @@ class MeasureViewViewModel: ObservableObject {
 
 //Reset function
     func reset() {
-        currentX = 0.0
-        currentY = 0.0
-        currentZ = 0.0
+//        currentX = 0.0
+//        currentY = 0.0
+//        currentZ = 0.0
         initialX = 0.0
         initialY = 0.0
         initialZ = 0.0
-        endX  = 0.0
-        endY  = 0.0
-        endZ  = 0.0
-        measurement  = 0.0
+//        endX  = 0.0
+//        endY  = 0.0
+//        endZ  = 0.0
+//        measurement  = 0.0
     }
     
 //Main Measure Button Function
@@ -139,14 +139,15 @@ class MeasureViewViewModel: ObservableObject {
             //Occasional bug?? where UI updates to previous values before force recalibration can finish. Reset function to start from scratch
             
 //            startMotionUpdates()
-//            reset()
             getStartPosition()
             isMeasuring.toggle()
         } else {
             getEndPosition()
             measurement = calculateGreatestDifference()
             isMeasuring.toggle()
-            startMotionUpdates()
+            reset()
+//            stopMotionUpdates()
+//            startMotionUpdates()
         }
     }
 /*  Formula to return the greatest difference between initial and end value.
@@ -203,7 +204,7 @@ class MeasureViewViewModel: ObservableObject {
     }
     
     func planeOfMeasurement() -> String {
-        if abs(currentX.rounded()) < 10.0 && abs(currentX.rounded()) < 10.0 {
+        if abs(currentX.rounded()) < 10.0 && abs(currentY.rounded()) < 10.0 {
             let plane = "Transverse Plane"
             return plane
             

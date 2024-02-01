@@ -6,8 +6,8 @@
 //
 
 import Foundation
-//For haptic feedback
-import UIKit
+//import UIKit, For haptic feedback, however, opted for AudioToolBox for increased tactile feedback
+
 //For increased Vibrate feedback
 import AudioToolbox
 
@@ -26,10 +26,6 @@ class TargetViewViewModel: ObservableObject {
     @Published var endTargetX: Double = 0.0
     @Published var endTargetY: Double = 0.0
     @Published var endTargetZ: Double = 0.0
-//    @Published var measurement: Double = 0.0
-//    @Published var setRangeX: Double = 0.0
-//    @Published var setRangeY: Double = 0.0
-//    @Published var setRangeZ: Double = 0.0
     @Published var repCount: Double = 0.0
 
     init() {
@@ -55,44 +51,6 @@ class TargetViewViewModel: ObservableObject {
         func stopMotionUpdates() {
                motionManager.stopUpdates()
            }
-    
-//    func calculateGreatestDifference(initialValueX: Double,
-//                                     endValueX: Double,
-//                                     initialValueY: Double,
-//                                     endValueY: Double,
-//                                     initialValueZ: Double,
-//                                     endValueZ: Double)-> Double{
-//            let differences = [
-//            abs(initialValueX - endValueX),
-//            abs(initialValueY - endValueY),
-//            abs(initialValueZ - endValueZ)
-//        ]
-//        return differences.max() ?? 0.0
-//    }
-    
-    
-//    func greatestCurrentValue() -> Double {
-//        let greatestValue = [
-//                currentX,
-//                currentY,
-//                currentZ,
-//        ]
-//        return greatestValue.max() ?? 0.0
-//    }
-
-//    func identifyAxisAndInitialValue(initialValueX: Double, endValueX: Double, initialValueY: Double, endValueY: Double, initialValueZ: Double, endValueZ: Double) -> (axis: String, initialValue: Double) {
-//        let differences = [
-//            ("X", initialValueX, abs(initialValueX - endValueX)),
-//            ("Y", initialValueY, abs(initialValueY - endValueY)),
-//            ("Z", initialValueZ, abs(initialValueZ - endValueZ))
-//        ]
-//        
-//        if let maxDifference = differences.max(by: { $0.2 < $1.2 }) {
-//            return (maxDifference.0, maxDifference.1)
-//        } else {
-//            return ("", 0.0)
-//        }
-//    }
     
 //Haptic Feedback --> Too weak. Updating to use AudioToolbox
     func vibrate() {

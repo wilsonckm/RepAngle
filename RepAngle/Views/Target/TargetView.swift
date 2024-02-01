@@ -33,26 +33,14 @@ struct TargetView: View {
             }
             .onTapGesture {
                 if isResetToggle == false {
-//                    viewModel.endTargetX = viewModel.currentX
-//                    viewModel.endTargetY = viewModel.currentY
-//                    viewModel.endTargetZ = viewModel.currentZ
                     viewModel.setTargetRange()
                     isResetToggle = true
                 } else {
-//                    viewModel.initialTargetX = 0.0
-//                    viewModel.initialTargetY = 0.0
-//                    viewModel.initialTargetZ = 0.0
-//                    viewModel.endTargetX = 0.0
-//                    viewModel.endTargetY = 0.0
-//                    viewModel.endTargetZ = 0.0
-////                    viewModel.measurement = 0.0
-//                    viewModel.repCount = 0
                     viewModel.reset()
                     rangeAccuracy = 10.0
                     isResetToggle = false
                 }
             }
-//
             VStack {
                 Slider(
                     value: $rangeAccuracy,
@@ -80,22 +68,6 @@ struct TargetView: View {
                     .foregroundStyle(.white)
                     .tint(.blue)
                 }
-                
-                //To do:
-//                HStack {
-//                    Button("15 deg"){
-//                        
-//                    }
-//                    Button("30 deg"){
-//                        
-//                    }
-//                    Button("45 deg"){
-//                        
-//                    }
-//                    Button("60 deg"){
-//                        
-//                    }
-//                }
             }
         }
     }

@@ -18,11 +18,6 @@ class MotionManager: ObservableObject {
     private var y = 0.0
     private var z = 0.0
     
-    //Current formatted values in degress:
-//    @Published var currentX: Double = 0.0
-//    @Published var currentY: Double = 0.0
-//    @Published var currentZ: Double = 0.0
-    
     var isDeviceMotionActive: Bool {
             motionManager.isDeviceMotionActive
         }
@@ -31,15 +26,15 @@ class MotionManager: ObservableObject {
         //Captures data on an interval. Mainly for battery consumption.
         motionManager.deviceMotionUpdateInterval = 1/15
         
-        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] data, error in
+        motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: .main ) { [weak self] data, error in
             //Data is optional therefore necessary to unwrap
             guard let motion = data?.attitude else { return }
             self?.x = motion.pitch
             self?.y = motion.roll
             self?.z = motion.yaw
+//            self?.xArbitrary = motion.
         }
     }
-// -- Removed start/stop option -- User will be on either screens which will need Motion Manager. Prevents potential misuse by forgetting to manually startMotionUpdates
 
 //Start Function
     func startUpdates() {

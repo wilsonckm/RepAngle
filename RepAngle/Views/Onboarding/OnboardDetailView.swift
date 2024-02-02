@@ -21,9 +21,6 @@ struct OnboardingDetailView: View {
                 
                 Spacer()
                 Spacer()
-                
-                Image("onboarding")
-                    .padding(.bottom, 32)
                 Text(headline)
                     .bold()
                     .font(.system(size: 22))

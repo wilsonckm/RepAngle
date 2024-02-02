@@ -22,6 +22,7 @@ class MeasureViewViewModel: ObservableObject {
     @Published var endZ: Double = 0.0
     @Published var measurement: Double = 0.0
     @Published var isMeasuring = false
+    @Published var plane: String = "Saggital Plane/Frontal"
     
 //Timer required to force a SwiftUI view update for the continuous current X, Y, Z values. Previous attempts to use computed properties did not update
     init() {
@@ -70,11 +71,6 @@ class MeasureViewViewModel: ObservableObject {
     }
     
     func getStartPosition() {
-        //occasional ui race condition bug where UI would update to previous coordinates as
-//        reset()
-        //Start Motion updates used to force recalibration of Z axis
-//        startMotionUpdates()
-//        reset()
         initialX = currentX
         initialY = currentY
         initialZ = currentZ
@@ -84,9 +80,6 @@ class MeasureViewViewModel: ObservableObject {
         endX = currentX
         endY = currentY
         endZ = currentZ
-        
-//        startMotionUpdates()
-
     }
     
 //Computed properties --> Computed properties itself will not trigger swiftUI update but since the timer above is forcing and update, these values below will continuously be updated on screen.
@@ -121,31 +114,26 @@ class MeasureViewViewModel: ObservableObject {
 
 //Reset function
     func reset() {
-//        currentX = 0.0
-//        currentY = 0.0
-//        currentZ = 0.0
-        initialX = 0.0
-        initialY = 0.0
-        initialZ = 0.0
-//        endX  = 0.0
-//        endY  = 0.0
-//        endZ  = 0.0
-//        measurement  = 0.0
+        //Reset values initial and end to current position
+        getStartPosition()
+        getEndPosition()
+        measurement  = 0.0
+        isMeasuring = false
+        plane = "Saggital Plane/Frontal"
     }
     
 //Main Measure Button Function
     func measureButtonFunction() {
         if isMeasuring == false {
-            //Occasional bug?? where UI updates to previous values before force recalibration can finish. Reset function to start from scratch
-            
-//            startMotionUpdates()
+            //Occasional bug where UI updates to previous values before force recalibration can finish. Reset function to start from scratch
+            reset()
             getStartPosition()
+            planeOfMeasurement()
             isMeasuring.toggle()
         } else {
             getEndPosition()
             measurement = calculateGreatestDifference()
             isMeasuring.toggle()
-            reset()
 //            stopMotionUpdates()
 //            startMotionUpdates()
         }
@@ -181,36 +169,25 @@ class MeasureViewViewModel: ObservableObject {
             let difference = abs(initialZ - currentZ)
             return difference
         
-            
             //Formulas below are to account for measurement in the X axis. While Y would determine which formulas to use in order to account for negative initial degree measurements as Pitch/X will be the measurement angle.
             
             //When X passes 90 degrees
         } else if (initialY <= 0 && endY >= 0) || (initialY > 0 && endY < 0) {
             let difference = (90 - initialX) + abs(90 - currentX)
             return difference
-            
-            //When inital X is negative
-        } 
-//            else if (initialY < 0 && endY < 0) {
-//            let difference = abs(initialX) + currentX
-//            return difference
-//            
-//            //All other instances
-//        }
-        else {
+    
+            //All other possibilities
+        } else {
             let difference = abs(initialX - currentX)
             return difference
         }
     }
     
-    func planeOfMeasurement() -> String {
+    func planeOfMeasurement() {
         if abs(currentX.rounded()) < 10.0 && abs(currentY.rounded()) < 10.0 {
-            let plane = "Transverse Plane"
-            return plane
-            
+            plane = "Transverse Plane"
         } else {
-            let plane = "Saggital Plane/Frontal"
-            return plane
+            plane = "Saggital Plane/Frontal"
         }
     }
     

@@ -28,6 +28,7 @@ struct OnboardingDetailView: View {
                     .bold()
                     .font(.system(size: 22))
                     .foregroundStyle(.white)
+                    .padding()
                 Text(subtitle)
                     .foregroundStyle(.white)
                     .padding(.bottom, 64)
@@ -56,7 +57,7 @@ struct OnboardingDetailView: View {
 }
 
 #Preview {
-    OnboardingDetailView(bgColor: Color(red: 111/255, green: 154/255, blue: 189/255), headline: "Welcome to RepAngle", subtitle: "Track your exercises and search up new one!") {
+    OnboardingDetailView(bgColor: Color(red: 111/255, green: 154/255, blue: 189/255), headline: "Welcome to RepAngle", subtitle: "Measure your range of motion and track your reps") {
         //No action for preview
     }
 }

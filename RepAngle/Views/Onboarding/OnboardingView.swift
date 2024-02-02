@@ -14,22 +14,22 @@ struct OnboardingView: View {
     var body: some View {
         ZStack {
             if onboardingIndex == 0 {
-                Color(Color(red: 111/255, green: 154/255, blue: 189/255))
+                Color(.black)
                     .ignoresSafeArea()
             } else if onboardingIndex == 1 {
-                Color(Color(red: 111/255, green: 225/255, blue: 189/255))
+                Color(.black)
                     .ignoresSafeArea()
             } else if onboardingIndex == 2 {
-                Color(Color(red: 255/255, green: 154/255, blue: 189/255))
+                Color(.black)
                     .ignoresSafeArea()
             }
             
             
             TabView(selection: $onboardingIndex ) {
                 //Onboarding page 1
-                OnboardingDetailView(bgColor: Color(red: 111/255, green: 154/255, blue: 189/255),
-                                     headline: "",
-                                     subtitle: "Track workouts and search for new exercises") {
+                OnboardingDetailView(bgColor: Color(.black),
+                                     headline: "Welcome to Rep Angle",
+                                     subtitle: "Digital Goniometer to help you measure joint range of motion!") {
                     withAnimation {
                         onboardingIndex = 1
                     }
@@ -38,9 +38,9 @@ struct OnboardingView: View {
                                      .ignoresSafeArea()
                 
                 //Onboarding page 2
-                OnboardingDetailView(bgColor: Color(red: 111/255, green: 225/255, blue: 189/255),
-                                     headline: "Gain insights on your progress",
-                                     subtitle: "Learn about how to exercise effectively") {
+                OnboardingDetailView(bgColor: Color(.black),
+                                     headline: "Track your reps",
+                                     subtitle: "Ensure consistent range of motion. Reps only count if you reach the range you set.") {
                     withAnimation {
                         onboardingIndex = 2
                     }
@@ -49,9 +49,9 @@ struct OnboardingView: View {
                                      .ignoresSafeArea()
                 
                 //Onboarding page 3
-                OnboardingDetailView(bgColor: Color(red: 255/255, green: 154/255, blue: 189/255),
-                                     headline: "Chat with a personal coach",
-                                     subtitle: "Get personalized care for your specific goals") {
+                OnboardingDetailView(bgColor: Color(.black),
+                                     headline: "Measurment Accuracy Tip:",
+                                     subtitle: "Try to be as consistent as possible with where it is placed pre and post measurement") {
                     dismiss()
                 }
                                      .tag(2)

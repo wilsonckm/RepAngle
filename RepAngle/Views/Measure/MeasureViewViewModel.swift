@@ -138,30 +138,6 @@ class MeasureViewViewModel: ObservableObject {
 //            startMotionUpdates()
         }
     }
-/*  Formula to return the greatest difference between initial and end value.
- 
-    Use case: To allow user to measure range of motion of a joint
-    Rationale: Updated to prevent edge case where values change drastically in certain positions. Initial start position of X will be used to measure "intent" of measurement plane. Roll/Y was eliminated as measurement around a longitudinal axis did not seem appropriate for measurement along frontal/saggital planes of the human body.
- 
-  "Pitch/X is a rotation around a lateral axis that passes through the device from side to side."
-  
-  "Roll/Y is a rotation around a longitudinal axis that passes through the device from its top to bottom."
-                 
-  "Yaw/Z is a rotation around an axis that runs vertically through the device. It is perpendicular to the body of the device, with its origin at the center of gravity and directed toward the bottom of the device."
- 
- 
- Main purpose of using pitch as the main measurement angle is due to gimbal lock: when the pitch angle approaches ±90 degrees, causing an indistinguishability between yaw and roll. This caused drastic changes in measured angles in certain use cases. An inherent limitation of Euler angles.
- 
- To prevent improper use and maintain accuracy of measurements, video demos of app is recommended to standarize measurement.
- 
- Additional tip would be to maintain points of interest when setting start/end measurements and limit extraneous axis movements.
- 
- Another possibility would be to use quaternions as they do not have the same limitations as euler angles. '
- 
- 
- For future consideration, possibly look into SLERP or spherical trigonometry as it may offer greater accuracy without the technical limitations of Euler Angles.
- 
- */
     
     func calculateGreatestDifference() -> Double {
         //Measure rotation in the Z axis. Possible use case would be to measure rotation about the transverse plane of the body (when standing), i.e. Cervical rotation/thoracic rotation

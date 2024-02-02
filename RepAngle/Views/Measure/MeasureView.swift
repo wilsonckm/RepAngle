@@ -20,6 +20,8 @@ struct MeasureView: View {
                     .frame(height: 350)
                     .foregroundColor(viewModel.isMeasuring ? .red : .green)
                 VStack {
+                    Text(viewModel.isMeasuring ? "Tap to Measure:" : "Tap to Complete Measurement")
+                        .padding()
                     Text(viewModel.isMeasuring ? "End Position" : "Start Position")
                     Text(viewModel.isMeasuring ? "\(viewModel.calculateGreatestDifference(), specifier: "%.1f")" : "\(viewModel.measurement, specifier: "%.1f")")
                         .font(.system(size: 72))

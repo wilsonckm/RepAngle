@@ -7,9 +7,9 @@
 
 import Foundation
 //import UIKit, For haptic feedback, however, opted for AudioToolBox for increased tactile feedback
-
 //For increased Vibrate feedback
 import AudioToolbox
+
 
 
 class TargetViewViewModel: ObservableObject {
@@ -59,6 +59,17 @@ class TargetViewViewModel: ObservableObject {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
     }
     
+    
+    func playAlertSound() {
+        // Example of playing a system sound (e.g., mail sent sound)
+        let systemSoundID: SystemSoundID = 1003 // Change this ID for different system sounds
+        AudioServicesPlaySystemSound(systemSoundID)
+        
+        // Example of playing a custom sound, ensure "soundName.wav" is in your project
+        // playCustomSound(named: "soundName.wav")
+    }
+    
+    
 //Count Rep
     func addRep(){
         if endTargetX != 0.0 && endTargetY != 0.0 && endTargetZ != 0.0 {
@@ -75,6 +86,7 @@ class TargetViewViewModel: ObservableObject {
             && (abs(currentY - endTargetY) <= accuracy)
             && (abs(currentZ - endTargetZ) <= accuracy) {
             vibrate()
+            playAlertSound()
             return true
         } else {
             return false

@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         TabView {
-            MeasureView()
+            UpdatedMeasureView()
                 .tabItem {
                     VStack {
                         Image(systemName: "lines.measurement.horizontal")

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D1862FD92DBC78D700E9AA52 /* UpdatedMeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1862FD82DBC78D700E9AA52 /* UpdatedMeasureView.swift */; };
+		D1862FDD2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1862FDC2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift */; };
 		D1B5D3122B67363100ADEB86 /* TargetViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B5D3112B67363100ADEB86 /* TargetViewViewModel.swift */; };
 		D1B5D3142B674CC200ADEB86 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B5D3132B674CC200ADEB86 /* HomeView.swift */; };
 		D1D7CF9D2B62F8AC00945E01 /* RepAngleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D1862FD82DBC78D700E9AA52 /* UpdatedMeasureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedMeasureView.swift; sourceTree = "<group>"; };
+		D1862FDC2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedMeasureViewViewModel.swift; sourceTree = "<group>"; };
 		D1B5D3112B67363100ADEB86 /* TargetViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetViewViewModel.swift; sourceTree = "<group>"; };
 		D1B5D3132B674CC200ADEB86 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D1D7CF992B62F8AC00945E01 /* RepAngle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepAngle.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -46,6 +50,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D13593E92DBC749400B9F9FC /* UpdatedMeasure */ = {
+			isa = PBXGroup;
+			children = (
+				D1862FD82DBC78D700E9AA52 /* UpdatedMeasureView.swift */,
+				D1862FDC2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift */,
+			);
+			path = UpdatedMeasure;
+			sourceTree = "<group>";
+		};
 		D1D7CF902B62F8AC00945E01 = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +108,7 @@
 			children = (
 				D1D7CF9E2B62F8AC00945E01 /* MeasureView.swift */,
 				D1D7CFAB2B64ACA900945E01 /* MeasureViewViewModel.swift */,
+				D13593E92DBC749400B9F9FC /* UpdatedMeasure */,
 			);
 			path = Measure;
 			sourceTree = "<group>";
@@ -213,6 +227,8 @@
 				D1D7CFB32B64ADD000945E01 /* OnboardDetailView.swift in Sources */,
 				D1D7CFB12B64AD8E00945E01 /* OnboardingView.swift in Sources */,
 				D1D7CF9F2B62F8AC00945E01 /* MeasureView.swift in Sources */,
+				D1862FD92DBC78D700E9AA52 /* UpdatedMeasureView.swift in Sources */,
+				D1862FDD2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift in Sources */,
 				D1D7CF9D2B62F8AC00945E01 /* RepAngleApp.swift in Sources */,
 				D1D7CFB92B65FC9700945E01 /* TargetView.swift in Sources */,
 			);

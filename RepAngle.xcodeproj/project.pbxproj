@@ -7,15 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D1862FD92DBC78D700E9AA52 /* UpdatedMeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1862FD82DBC78D700E9AA52 /* UpdatedMeasureView.swift */; };
-		D1862FDD2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1862FDC2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift */; };
-		D1B5D3122B67363100ADEB86 /* TargetViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B5D3112B67363100ADEB86 /* TargetViewViewModel.swift */; };
 		D1B5D3142B674CC200ADEB86 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B5D3132B674CC200ADEB86 /* HomeView.swift */; };
 		D1D7CF9D2B62F8AC00945E01 /* RepAngleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */; };
 		D1D7CF9F2B62F8AC00945E01 /* MeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CF9E2B62F8AC00945E01 /* MeasureView.swift */; };
 		D1D7CFA12B62F8AD00945E01 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1D7CFA02B62F8AD00945E01 /* Assets.xcassets */; };
 		D1D7CFA42B62F8AD00945E01 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D1D7CFA32B62F8AD00945E01 /* Preview Assets.xcassets */; };
-		D1D7CFAC2B64ACA900945E01 /* MeasureViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CFAB2B64ACA900945E01 /* MeasureViewViewModel.swift */; };
 		D1D7CFB12B64AD8E00945E01 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CFB02B64AD8E00945E01 /* OnboardingView.swift */; };
 		D1D7CFB32B64ADD000945E01 /* OnboardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CFB22B64ADD000945E01 /* OnboardDetailView.swift */; };
 		D1D7CFB62B64B3EA00945E01 /* MotionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CFB52B64B3EA00945E01 /* MotionManager.swift */; };
@@ -23,16 +19,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D1862FD82DBC78D700E9AA52 /* UpdatedMeasureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedMeasureView.swift; sourceTree = "<group>"; };
-		D1862FDC2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedMeasureViewViewModel.swift; sourceTree = "<group>"; };
-		D1B5D3112B67363100ADEB86 /* TargetViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetViewViewModel.swift; sourceTree = "<group>"; };
 		D1B5D3132B674CC200ADEB86 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D1D7CF992B62F8AC00945E01 /* RepAngle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepAngle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepAngleApp.swift; sourceTree = "<group>"; };
 		D1D7CF9E2B62F8AC00945E01 /* MeasureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureView.swift; sourceTree = "<group>"; };
 		D1D7CFA02B62F8AD00945E01 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D1D7CFA32B62F8AD00945E01 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		D1D7CFAB2B64ACA900945E01 /* MeasureViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureViewViewModel.swift; sourceTree = "<group>"; };
 		D1D7CFB02B64AD8E00945E01 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		D1D7CFB22B64ADD000945E01 /* OnboardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardDetailView.swift; sourceTree = "<group>"; };
 		D1D7CFB52B64B3EA00945E01 /* MotionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionManager.swift; sourceTree = "<group>"; };
@@ -50,15 +42,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D13593E92DBC749400B9F9FC /* UpdatedMeasure */ = {
-			isa = PBXGroup;
-			children = (
-				D1862FD82DBC78D700E9AA52 /* UpdatedMeasureView.swift */,
-				D1862FDC2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift */,
-			);
-			path = UpdatedMeasure;
-			sourceTree = "<group>";
-		};
 		D1D7CF902B62F8AC00945E01 = {
 			isa = PBXGroup;
 			children = (
@@ -79,7 +62,6 @@
 			isa = PBXGroup;
 			children = (
 				D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */,
-				D1D7CFAA2B64A94100945E01 /* Helper */,
 				D1D7CFB42B64B3CD00945E01 /* Model */,
 				D1D7CFAE2B64ACBC00945E01 /* Views */,
 				D1D7CFA02B62F8AD00945E01 /* Assets.xcassets */,
@@ -96,19 +78,10 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		D1D7CFAA2B64A94100945E01 /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helper;
-			sourceTree = "<group>";
-		};
 		D1D7CFAD2B64ACAD00945E01 /* Measure */ = {
 			isa = PBXGroup;
 			children = (
 				D1D7CF9E2B62F8AC00945E01 /* MeasureView.swift */,
-				D1D7CFAB2B64ACA900945E01 /* MeasureViewViewModel.swift */,
-				D13593E92DBC749400B9F9FC /* UpdatedMeasure */,
 			);
 			path = Measure;
 			sourceTree = "<group>";
@@ -118,8 +91,8 @@
 			children = (
 				D1B5D3132B674CC200ADEB86 /* HomeView.swift */,
 				D1D7CFAF2B64ACCC00945E01 /* Onboarding */,
-				D1D7CFB72B65FC8B00945E01 /* Target */,
 				D1D7CFAD2B64ACAD00945E01 /* Measure */,
+				D1D7CFB72B65FC8B00945E01 /* Target */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -145,7 +118,6 @@
 			isa = PBXGroup;
 			children = (
 				D1D7CFB82B65FC9700945E01 /* TargetView.swift */,
-				D1B5D3112B67363100ADEB86 /* TargetViewViewModel.swift */,
 			);
 			path = Target;
 			sourceTree = "<group>";
@@ -221,14 +193,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				D1B5D3142B674CC200ADEB86 /* HomeView.swift in Sources */,
-				D1D7CFAC2B64ACA900945E01 /* MeasureViewViewModel.swift in Sources */,
 				D1D7CFB62B64B3EA00945E01 /* MotionManager.swift in Sources */,
-				D1B5D3122B67363100ADEB86 /* TargetViewViewModel.swift in Sources */,
 				D1D7CFB32B64ADD000945E01 /* OnboardDetailView.swift in Sources */,
 				D1D7CFB12B64AD8E00945E01 /* OnboardingView.swift in Sources */,
 				D1D7CF9F2B62F8AC00945E01 /* MeasureView.swift in Sources */,
-				D1862FD92DBC78D700E9AA52 /* UpdatedMeasureView.swift in Sources */,
-				D1862FDD2DBC78F800E9AA52 /* UpdatedMeasureViewViewModel.swift in Sources */,
 				D1D7CF9D2B62F8AC00945E01 /* RepAngleApp.swift in Sources */,
 				D1D7CFB92B65FC9700945E01 /* TargetView.swift in Sources */,
 			);

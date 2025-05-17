@@ -6,56 +6,91 @@
 //
 
 import SwiftUI
+import CoreMotion
 
 struct MeasureView: View {
-    @StateObject private var viewModel = MeasureViewViewModel()
+    
+    private var motionManager = MotionManager.shared
+    @State private var initialQuaternion: CMQuaternion?
+    @State private var currentQuaternion: CMQuaternion?
+    @State private var rotationAngle: Double = 0.0
+    @State private var timer: Timer? = nil
+    
+    @State private var isMeasuring: Bool = false {
+        didSet {
+            UIApplication.shared.isIdleTimerDisabled = isMeasuring
+        }
+    }
     
     var body: some View {
         VStack {
-            ZStack {
-                Rectangle()
-                    .frame(width: 1)
-                    .foregroundColor(.white)
-                RoundedRectangle(cornerRadius: 25)
-                    .frame(height: 350)
-                    .foregroundColor(viewModel.isMeasuring ? .red : .green)
-                VStack {
-                    Text(viewModel.isMeasuring ? "Tap to Complete Measurement" : "Tap to Measure:")
-                        .padding()
-                    Text(viewModel.isMeasuring ? "End Position" : "Start Position")
-                    Text(viewModel.isMeasuring ? "\(viewModel.calculateGreatestDifference(), specifier: "%.1f")" : "\(viewModel.measurement, specifier: "%.1f")")
-                        .font(.system(size: 72))
-                        .bold()
-                    
-                    Text(viewModel.isMeasuring ? "\(viewModel.subtract180FromDifference, specifier: "%.1f")" : "\(viewModel.subtract180(value: viewModel.measurement), specifier: "%.1f")")
-                        .font(.system(size: 36))
-                        .bold()
-                    Text(viewModel.plane)
-                }
-            }
-            .onTapGesture {
-                viewModel.measureButtonFunction()
-            }
+            RoundedRectangle(cornerRadius: 20)
+                .frame(height: 350)
+                .foregroundColor(isMeasuring ? .red : .green)
             
-            //            VStack {
-            //                Text("\(viewModel.currentX)")
-            //                Text("\(viewModel.currentY)")
-            //                Text("\(viewModel.currentZ)")
-            //            }
-            //            VStack{
-            //                Button("Reset"){
-            //                    viewModel.reset()
-            //                }
-            //                .buttonStyle(.borderedProminent)
-            //                .foregroundStyle(.white)
-            //                .tint(.blue)
-            //                .controlSize(.large)
-//        }
-            .padding()
+            Text("\(rotationAngle, specifier: "%.1f")°")
+                .font(.system(size: 72))
+                .bold()
+               
         }
+        .onTapGesture {
+            motionManager.startUpdates()
+            if !isMeasuring {
+                startMeasuring()
+            } else {
+                stopMeasuring()
+            }
+        }
+        .onDisappear {
+            // Always clean up timer if the view disappears
+            timer?.invalidate()
+            // Turns off screen
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
+    }
+    
+    
+    private func startMeasuring() {
+        rotationAngle = 0.0
+        isMeasuring = true
+        motionManager.startUpdates()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // 0.1 seconds delay
+            initialQuaternion = motionManager.currentQuaternion
+            timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
+                updateRotation()
+            }
+        }
+    }
+    
+    private func stopMeasuring() {
+        timer?.invalidate()
+        timer = nil
+        isMeasuring = false
+    }
+    
+    private func updateRotation() {
+        guard let start = initialQuaternion, let current = motionManager.currentQuaternion else { return }
+        let newAngle = calculateRotationAngle(from: start, to: current)
+
+            rotationAngle = newAngle
+    }
+    
+    private func calculateRotationAngle(from start: CMQuaternion, to end: CMQuaternion) -> Double {
+        let dot = start.x * end.x + start.y * end.y + start.z * end.z + start.w * end.w
+        let clampedDot = min(1.0, max(-1.0, dot)) // Clamp to prevent NaN
+        let angleRadians = 2 * acos(clampedDot)
+        var angleDegrees = angleRadians * 180 / .pi
+        
+        // Always take the smaller angle
+        if angleDegrees > 180 {
+            angleDegrees = 360 - angleDegrees
+        }
+        
+        return angleDegrees
     }
 }
 
-    //#Preview {
-    //    ContentView()
-    //}
+#Preview {
+    MeasureView()
+}

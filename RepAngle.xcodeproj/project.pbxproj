@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D18DD3062DD97D2100DCEE22 /* MeasurementItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18DD3052DD97D2100DCEE22 /* MeasurementItem.swift */; };
 		D1B5D3142B674CC200ADEB86 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1B5D3132B674CC200ADEB86 /* HomeView.swift */; };
 		D1D7CF9D2B62F8AC00945E01 /* RepAngleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */; };
 		D1D7CF9F2B62F8AC00945E01 /* MeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1D7CF9E2B62F8AC00945E01 /* MeasureView.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D18DD3052DD97D2100DCEE22 /* MeasurementItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MeasurementItem.swift; path = RepAngle/MeasurementItem.swift; sourceTree = SOURCE_ROOT; };
 		D1B5D3132B674CC200ADEB86 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D1D7CF992B62F8AC00945E01 /* RepAngle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RepAngle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepAngleApp.swift; sourceTree = "<group>"; };
@@ -45,6 +47,7 @@
 		D18DD3032DD972F800DCEE22 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D18DD3052DD97D2100DCEE22 /* MeasurementItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				D1D7CFB32B64ADD000945E01 /* OnboardDetailView.swift in Sources */,
 				D1D7CFB12B64AD8E00945E01 /* OnboardingView.swift in Sources */,
 				D1D7CF9F2B62F8AC00945E01 /* MeasureView.swift in Sources */,
+				D18DD3062DD97D2100DCEE22 /* MeasurementItem.swift in Sources */,
 				D1D7CF9D2B62F8AC00945E01 /* RepAngleApp.swift in Sources */,
 				D1D7CFB92B65FC9700945E01 /* TargetView.swift in Sources */,
 			);

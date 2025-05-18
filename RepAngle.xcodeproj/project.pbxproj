@@ -42,6 +42,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D18DD3032DD972F800DCEE22 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		D1D7CF902B62F8AC00945E01 = {
 			isa = PBXGroup;
 			children = (
@@ -62,7 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				D1D7CF9C2B62F8AC00945E01 /* RepAngleApp.swift */,
-				D1D7CFB42B64B3CD00945E01 /* Model */,
+				D1D7CFB42B64B3CD00945E01 /* Manager */,
+				D18DD3032DD972F800DCEE22 /* Model */,
 				D1D7CFAE2B64ACBC00945E01 /* Views */,
 				D1D7CFA02B62F8AD00945E01 /* Assets.xcassets */,
 				D1D7CFA22B62F8AD00945E01 /* Preview Content */,
@@ -106,12 +114,12 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
-		D1D7CFB42B64B3CD00945E01 /* Model */ = {
+		D1D7CFB42B64B3CD00945E01 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
 				D1D7CFB52B64B3EA00945E01 /* MotionManager.swift */,
 			);
-			path = Model;
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		D1D7CFB72B65FC8B00945E01 /* Target */ = {

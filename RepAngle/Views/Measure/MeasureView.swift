@@ -22,34 +22,93 @@ struct MeasureView: View {
         }
     }
     
+    @State private var showingHistory = false
+    @State private var showingInfo = false
+    
     var body: some View {
         VStack {
-            RoundedRectangle(cornerRadius: 20)
-                .frame(height: 350)
-                .foregroundColor(isMeasuring ? .red : .green)
-            
-            Text("\(rotationAngle, specifier: "%.1f")°")
-                .font(.system(size: 72))
-                .bold()
-               
-        }
-        .onTapGesture {
-            motionManager.startUpdates()
-            if !isMeasuring {
-                startMeasuring()
-            } else {
-                stopMeasuring()
+            HStack {
+                Button(action: {
+                    showingHistory = true
+                }) {
+                    Image(systemName: "list.bullet")
+                        .foregroundColor(.primary)
+                        .padding(10)
+                        .background(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    showingInfo = true
+                }) {
+                    Image(systemName: "info.circle")
+                        .foregroundColor(.primary)
+                        .padding(10)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                }
+            }
+            //Measure
+            ZStack {
+                Circle()
+                    .opacity(0.01)
+                Circle()
+                    .stroke(lineWidth: 10)
+                    .foregroundColor(isMeasuring ? .red : .green)
+                VStack (alignment: .center){
+                    Text("\(rotationAngle, specifier: "%.0f")°")
+                        .font(.system(size: 72))
+                        .bold()
+                        .padding(.vertical, -10)
+                    Divider()
+
+                        .padding(.horizontal,20)
+                    Text("\(180 - rotationAngle, specifier: "%.0f" )°")
+                        .font(.system(size: 64))
+                        .padding(.vertical, -10)
+                }
+            }
+            .onTapGesture {
+                motionManager.startUpdates()
+                if !isMeasuring {
+                    startMeasuring()
+                } else {
+                    stopMeasuring()
+                }
+            }
+            // To do: Target functionality
+            HStack {
+                Spacer()
+                Button(action: {
+                    // To do
+                }) {
+                    Image(systemName: "scope")
+                        .foregroundColor(.primary)
+                        .padding(10)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                }
             }
         }
+        .padding()
         .onDisappear {
             // Always clean up timer if the view disappears
             timer?.invalidate()
             // Turns off screen
             UIApplication.shared.isIdleTimerDisabled = false
         }
+        .sheet(isPresented: $showingHistory) {
+                   Text("History")
+                       .presentationDetents([.medium, .large])
+               }
+        .sheet(isPresented: $showingInfo) {
+                   Text("Info")
+                .presentationDetents([.large])
+               }
     }
-    
-    
+
     private func startMeasuring() {
         rotationAngle = 0.0
         isMeasuring = true

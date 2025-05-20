@@ -26,70 +26,93 @@ struct MeasureView: View {
     @State private var showingInfo = false
     
     var body: some View {
-        VStack {
-            HStack {
-                Button(action: {
-                    showingHistory = true
-                }) {
-                    Image(systemName: "list.bullet")
-                        .foregroundColor(.primary)
-                        .padding(10)
-                        .background(.ultraThinMaterial)
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                }
-                
-                Spacer()
-                
-                Button(action: {
-                    showingInfo = true
-                }) {
-                    Image(systemName: "info.circle")
-                        .foregroundColor(.primary)
-                        .padding(10)
-                        .background(.ultraThinMaterial)
-                        .clipShape(Circle())
-                }
-            }
-            //Measure
-            ZStack {
-                Circle()
-                    .opacity(0.01)
-                Circle()
-                    .stroke(lineWidth: 10)
-                    .foregroundColor(isMeasuring ? .red : .green)
-                VStack (alignment: .center){
-                    Text("\(rotationAngle, specifier: "%.0f")°")
-                        .font(.system(size: 72))
-                        .bold()
-                        .padding(.vertical, -10)
-                    Divider()
+        ZStack{
+            GeometryReader { geometry in
+                let midX = geometry.size.width / 2
+                let midY = geometry.size.height / 2
 
-                        .padding(.horizontal,20)
-                    Text("\(180 - rotationAngle, specifier: "%.0f" )°")
-                        .font(.system(size: 64))
-                        .padding(.vertical, -10)
-                }
+                // Horizontal line
+                Rectangle()
+                    .fill(Color.gray.opacity(0.5))
+                    .frame(height: 1)
+                    .position(x: midX, y: midY)
+
+                // Vertical line
+                Rectangle()
+                    .fill(Color.gray.opacity(0.5))
+                    .frame(width: 1)
+                    .position(x: midX, y: midY)
             }
-            .onTapGesture {
-                motionManager.startUpdates()
-                if !isMeasuring {
-                    startMeasuring()
-                } else {
-                    stopMeasuring()
+            VStack {
+                HStack {
+                    Button(action: {
+                        showingHistory = true
+                    }) {
+                        Image(systemName: "list.bullet")
+                            .foregroundColor(.primary)
+                            .font(.system(size: 24))
+                            .padding(10)
+                            .background(.ultraThinMaterial)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    }
+                    
+                    Spacer()
+                    Button(action: {
+                        showingInfo = true
+                    }) {
+                        Image(systemName: "info.circle")
+                            .foregroundColor(.primary)
+                        
+                            .font(.system(size: 24))
+                            .padding(10)
+                            .background(.ultraThinMaterial)
+                            .clipShape(Circle())
+                    }
                 }
-            }
-            // To do: Target functionality
-            HStack {
                 Spacer()
-                Button(action: {
-                    // To do
-                }) {
-                    Image(systemName: "scope")
-                        .foregroundColor(.primary)
-                        .padding(10)
-                        .background(.ultraThinMaterial)
-                        .clipShape(Circle())
+                //Measure
+                ZStack {
+                    
+                    Circle()
+                        .opacity(0.01)
+                    Circle()
+                        .stroke(lineWidth: 10)
+                        .foregroundColor(isMeasuring ? .red : .green)
+                    VStack (alignment: .center){
+                        Text("\(rotationAngle, specifier: "%.0f")°")
+                            .font(.system(size: 72))
+                            .bold()
+                            .padding(.vertical, -10)
+                        Divider()
+                            .padding(.horizontal,20)
+                        Text("\(180 - rotationAngle, specifier: "%.0f" )°")
+                            .font(.system(size: 64))
+                            .padding(.vertical, -10)
+                    }
                 }
+                .onTapGesture {
+                    motionManager.startUpdates()
+                    if !isMeasuring {
+                        startMeasuring()
+                    } else {
+                        stopMeasuring()
+                    }
+                }
+                // To do: Target functionality
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        // To do
+                    }) {
+                        Image(systemName: "scope")
+                            .foregroundColor(.primary)
+                            .font(.system(size: 24))
+                            .padding(10)
+                            .background(.ultraThinMaterial)
+                            .clipShape(Circle())
+                    }
+                }
+                Spacer()
             }
         }
         .padding()

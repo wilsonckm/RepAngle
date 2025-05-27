@@ -79,11 +79,11 @@ struct TargetView: View {
         motionManager.startUpdates()
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
             currentQuaternion = motionManager.currentQuaternion
-            if isMeasuring {
-                if didReachTarget() {
-                    // Nothing needed here — the `didReachTarget()` already vibrates and adds rep
-                }
-            }
+//            if isMeasuring {
+//                if didReachTarget() {
+//                    // Nothing needed here — the `didReachTarget()` already vibrates and adds rep
+//                }
+//            }
         }
     }
     

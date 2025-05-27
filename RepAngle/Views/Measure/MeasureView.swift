@@ -7,21 +7,30 @@
 
 import SwiftUI
 import CoreMotion
+import AudioToolbox
 
 struct MeasureView: View {
     
     private var motionManager = MotionManager.shared
+    // Measure
     @State private var initialQuaternion: CMQuaternion?
-    @State private var currentQuaternion: CMQuaternion?
     @State private var rotationAngle: Double = 0.0
     @State private var timer: Timer? = nil
-    
     @State private var isMeasuring: Bool = false {
         didSet {
             UIApplication.shared.isIdleTimerDisabled = isMeasuring
         }
     }
+    // Target
+    @State private var currentQuaternion: CMQuaternion?
+    @State private var isTargetSet: Bool = false
+    @State private var repCount: Double = 0.0
+    @State private var rangeAccuracy = 10.0
+    @State private var repAlreadyCounted = false
+    @State private var targetQuaternion: CMQuaternion?
     
+    // Record
+    @State private var isRecording: Bool = false
     @State private var showingHistory = false
     @State private var showingInfo = false
     
@@ -96,21 +105,39 @@ struct MeasureView: View {
                         startMeasuring()
                     } else {
                         stopMeasuring()
+//                        resetTarget()
                     }
                 }
-                // To do: Target functionality
                 HStack {
-                    Spacer()
                     Button(action: {
-                        // To do
+                        // To do: Record
+                        isRecording.toggle()
                     }) {
-                        Image(systemName: "scope")
-                            .foregroundColor(.primary)
+                        Image(systemName: "record.circle")
+                            .foregroundStyle(isRecording ? .red : .gray)
                             .font(.system(size: 24))
                             .padding(10)
                             .background(.ultraThinMaterial)
                             .clipShape(Circle())
                     }
+                    Spacer()
+                    
+                    Button(action: {
+//                        if !isTargetSet {
+//                            setTarget()
+//                        } else {
+//                            resetTarget()
+//                        }
+                    }) {
+                        Image(systemName: "scope")
+//                            .foregroundStyle(isTargetSet ? (didReachTarget() ? .green : .red) : .gray)
+                            .font(.system(size: 24))
+                            .padding(10)
+                            .background(.ultraThinMaterial)
+                            .clipShape(Circle())
+                    }
+                    .disabled(!isMeasuring)
+                    .opacity(isMeasuring ? 1 : 0.5)
                 }
                 Spacer()
             }
@@ -131,7 +158,8 @@ struct MeasureView: View {
                 .presentationDetents([.large])
                }
     }
-
+    
+    // Measure
     private func startMeasuring() {
         rotationAngle = 0.0
         isMeasuring = true
@@ -139,6 +167,7 @@ struct MeasureView: View {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // 0.1 seconds delay
             initialQuaternion = motionManager.currentQuaternion
+//            currentQuaternion = motionManager.currentQuaternion
             timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
                 updateRotation()
             }
@@ -171,6 +200,48 @@ struct MeasureView: View {
         
         return angleDegrees
     }
+    
+    
+//    // Target
+//    private func setTarget() {
+//        targetQuaternion = initialQuaternion
+//        isTargetSet = true
+//    }
+//    
+//    private func resetTarget() {
+//        targetQuaternion = nil
+//        repCount = 0
+//        isTargetSet = false
+//    }
+//    
+//    private func didReachTarget() -> Bool {
+//        guard let target = targetQuaternion, let current = currentQuaternion else {
+//            return false
+//        }
+//        
+//        let angleDifference = calculateRotationAngle(from: target, to: current)
+//        
+//        if angleDifference <= rangeAccuracy {
+//            if !repAlreadyCounted {
+//                vibrate()
+//                addRep()
+//                repAlreadyCounted = true  // ✅ Mark that we counted this rep
+//            }
+//            return true
+//        } else {
+//            repAlreadyCounted = false // ✅ Reset when they leave the target zone
+//            return false
+//        }
+//    }
+//    
+//    private func addRep() {
+//        repCount += 1
+//    }
+//    
+//    private func vibrate() {
+//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+//    }
+//    
 }
 
 #Preview {

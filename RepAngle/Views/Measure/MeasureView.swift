@@ -23,11 +23,11 @@ struct MeasureView: View {
     }
     // Target
     @State private var currentQuaternion: CMQuaternion?
+    @State private var targetQuaternion: CMQuaternion?
     @State private var isTargetSet: Bool = false
     @State private var repCount: Double = 0.0
     @State private var rangeAccuracy = 10.0
     @State private var repAlreadyCounted = false
-    @State private var targetQuaternion: CMQuaternion?
     
     // Record
     @State private var isRecording: Bool = false
@@ -39,13 +39,13 @@ struct MeasureView: View {
             GeometryReader { geometry in
                 let midX = geometry.size.width / 2
                 let midY = geometry.size.height / 2
-
+                
                 // Horizontal line
                 Rectangle()
                     .fill(Color.gray.opacity(0.5))
                     .frame(height: 1)
                     .position(x: midX, y: midY)
-
+                
                 // Vertical line
                 Rectangle()
                     .fill(Color.gray.opacity(0.5))
@@ -79,6 +79,7 @@ struct MeasureView: View {
                     }
                 }
                 Spacer()
+                
                 //Measure
                 ZStack {
                     
@@ -105,7 +106,7 @@ struct MeasureView: View {
                         startMeasuring()
                     } else {
                         stopMeasuring()
-//                        resetTarget()
+                        resetTarget()
                     }
                 }
                 HStack {
@@ -123,14 +124,14 @@ struct MeasureView: View {
                     Spacer()
                     
                     Button(action: {
-//                        if !isTargetSet {
-//                            setTarget()
-//                        } else {
-//                            resetTarget()
-//                        }
+                        if !isTargetSet {
+                            setTarget()
+                        } else {
+                            resetTarget()
+                        }
                     }) {
                         Image(systemName: "scope")
-//                            .foregroundStyle(isTargetSet ? (didReachTarget() ? .green : .red) : .gray)
+                            .foregroundStyle(isTargetSet ? (didReachTarget() ? .green : .red) : .gray)
                             .font(.system(size: 24))
                             .padding(10)
                             .background(.ultraThinMaterial)
@@ -140,6 +141,40 @@ struct MeasureView: View {
                     .opacity(isMeasuring ? 1 : 0.5)
                 }
                 Spacer()
+                RoundedRectangle(cornerRadius: 25)
+                    .frame(height: 50)
+                    .foregroundStyle(didReachTarget() ? .green : .gray)
+                
+                
+                Text("\(targetQuaternion)")
+                Text("\(repCount)")
+                Text("is Target Set? \(isTargetSet)")
+                if didReachTarget() == true {
+                    Text("Target Reached")
+                } else {
+                    Text("Target not reached")
+                }
+                VStack {
+                    Slider(
+                        value: $rangeAccuracy,
+                        in: 2...15
+                    )
+                    Text("Target Accuracy: ±\(rangeAccuracy, specifier: "%.1f")°")
+                }
+                .padding()
+                
+                VStack {
+                    Button(isTargetSet ? "Reset" : "Set Target") {
+                        if !isTargetSet {
+                            setTarget()
+                        } else {
+                            resetTarget()
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .foregroundStyle(.white)
+                    .tint(.blue)
+                }
             }
         }
         .padding()
@@ -148,28 +183,52 @@ struct MeasureView: View {
             timer?.invalidate()
             // Turns off screen
             UIApplication.shared.isIdleTimerDisabled = false
+            stopMeasuring()
         }
         .sheet(isPresented: $showingHistory) {
-                   Text("History")
-                       .presentationDetents([.medium, .large])
-               }
+            Text("History")
+                .presentationDetents([.medium, .large])
+        }
         .sheet(isPresented: $showingInfo) {
-                   Text("Info")
+            Text("Info")
                 .presentationDetents([.large])
-               }
+        }
     }
     
     // Measure
+//    private func startMeasuring() {
+//        rotationAngle = 0.0
+//        isMeasuring = true
+//        motionManager.startUpdates()
+//        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // 0.1 seconds delay
+//            initialQuaternion = motionManager.currentQuaternion
+//            currentQuaternion = motionManager.currentQuaternion
+//            timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
+//                updateRotation()
+//            }
+//        }
+//    }
+  
     private func startMeasuring() {
         rotationAngle = 0.0
         isMeasuring = true
         motionManager.startUpdates()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // 0.1 seconds delay
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             initialQuaternion = motionManager.currentQuaternion
-//            currentQuaternion = motionManager.currentQuaternion
             timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
-                updateRotation()
+                guard let start = initialQuaternion else { return }
+                currentQuaternion = motionManager.currentQuaternion
+
+                if let current = currentQuaternion {
+                    let newAngle = calculateRotationAngle(from: start, to: current)
+                    rotationAngle = newAngle
+                }
+
+                if isTargetSet {
+                    _ = didReachTarget()
+                }
             }
         }
     }
@@ -178,13 +237,14 @@ struct MeasureView: View {
         timer?.invalidate()
         timer = nil
         isMeasuring = false
+        motionManager.stopUpdates()
     }
     
     private func updateRotation() {
         guard let start = initialQuaternion, let current = motionManager.currentQuaternion else { return }
         let newAngle = calculateRotationAngle(from: start, to: current)
-
-            rotationAngle = newAngle
+        
+        rotationAngle = newAngle
     }
     
     private func calculateRotationAngle(from start: CMQuaternion, to end: CMQuaternion) -> Double {
@@ -202,46 +262,63 @@ struct MeasureView: View {
     }
     
     
-//    // Target
-//    private func setTarget() {
-//        targetQuaternion = initialQuaternion
-//        isTargetSet = true
-//    }
-//    
-//    private func resetTarget() {
-//        targetQuaternion = nil
-//        repCount = 0
-//        isTargetSet = false
-//    }
-//    
-//    private func didReachTarget() -> Bool {
-//        guard let target = targetQuaternion, let current = currentQuaternion else {
-//            return false
-//        }
-//        
-//        let angleDifference = calculateRotationAngle(from: target, to: current)
-//        
-//        if angleDifference <= rangeAccuracy {
-//            if !repAlreadyCounted {
-//                vibrate()
-//                addRep()
-//                repAlreadyCounted = true  // ✅ Mark that we counted this rep
-//            }
-//            return true
-//        } else {
-//            repAlreadyCounted = false // ✅ Reset when they leave the target zone
-//            return false
-//        }
-//    }
-//    
-//    private func addRep() {
-//        repCount += 1
-//    }
-//    
-//    private func vibrate() {
-//        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
-//    }
-//    
+    // Target
+    
+    private func startUpdates() {
+        motionManager.startUpdates()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
+            currentQuaternion = motionManager.currentQuaternion
+            if isMeasuring && isTargetSet {
+                _ = didReachTarget() // This will handle the vibrate and rep count
+            }
+        }
+    }
+    
+    private func stopUpdates() {
+        timer?.invalidate()
+        timer = nil
+        motionManager.stopUpdates()
+    }
+    
+    private func setTarget() {
+        targetQuaternion = currentQuaternion
+        isTargetSet = true
+    }
+    
+    private func resetTarget() {
+        targetQuaternion = nil
+        isTargetSet = false
+        repCount = 0
+        isMeasuring = false
+    }
+    
+    private func didReachTarget() -> Bool {
+        guard let target = targetQuaternion, let current = currentQuaternion else {
+            return false
+        }
+        
+        let angleDifference = calculateRotationAngle(from: target, to: current)
+        
+        if angleDifference <= rangeAccuracy {
+            if !repAlreadyCounted {
+                vibrate()
+                addRep()
+                repAlreadyCounted = true  // ✅ Mark that we counted this rep
+            }
+            return true
+        } else {
+            repAlreadyCounted = false // ✅ Reset when they leave the target zone
+            return false
+        }
+    }
+    
+    private func addRep() {
+        repCount += 1
+    }
+    
+    private func vibrate() {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+    }
 }
 
 #Preview {

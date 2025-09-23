@@ -8,10 +8,16 @@
 import SwiftUI
 import CoreMotion
 import AudioToolbox
+import SwiftData
 
 struct MeasureView: View {
     
+    // Swift Data
+    @Environment(\.modelContext) private var context
+    
+    // Gyroscope Data
     private var motionManager = MotionManager.shared
+    
     // Measure
     @State private var initialQuaternion: CMQuaternion?
     @State private var rotationAngle: Double = 0.0
@@ -26,157 +32,124 @@ struct MeasureView: View {
     @State private var targetQuaternion: CMQuaternion?
     @State private var isTargetSet: Bool = false
     @State private var repCount: Double = 0.0
-    @State private var rangeAccuracy = 10.0
+    @State private var rangeAccuracy = 5.0
     @State private var repAlreadyCounted = false
     
     // Record
+    @State private var recordedReadings: [AngleReading] = []
     @State private var isRecording: Bool = false
     @State private var showingHistory = false
     @State private var showingInfo = false
     
     var body: some View {
-        ZStack{
-            GeometryReader { geometry in
-                let midX = geometry.size.width / 2
-                let midY = geometry.size.height / 2
+        VStack {
+            HStack {
+                Button(action: {
+                    showingHistory = true
+                }) {
+                    Image(systemName: "list.bullet")
+                        .foregroundColor(.primary)
+                        .font(.system(size: 24))
+                        .padding(10)
+                        .background(.ultraThinMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }
                 
-                // Horizontal line
-                Rectangle()
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(height: 1)
-                    .position(x: midX, y: midY)
-                
-                // Vertical line
-                Rectangle()
-                    .fill(Color.gray.opacity(0.5))
-                    .frame(width: 1)
-                    .position(x: midX, y: midY)
+                Spacer()
+                Button(action: {
+                    showingInfo = true
+                }) {
+                    Image(systemName: "info.circle")
+                        .foregroundColor(.primary)
+                    
+                        .font(.system(size: 24))
+                        .padding(10)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                }
             }
-            VStack {
-                HStack {
-                    Button(action: {
-                        showingHistory = true
-                    }) {
-                        Image(systemName: "list.bullet")
-                            .foregroundColor(.primary)
-                            .font(.system(size: 24))
-                            .padding(10)
-                            .background(.ultraThinMaterial)
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    }
-                    
-                    Spacer()
-                    Button(action: {
-                        showingInfo = true
-                    }) {
-                        Image(systemName: "info.circle")
-                            .foregroundColor(.primary)
-                        
-                            .font(.system(size: 24))
-                            .padding(10)
-                            .background(.ultraThinMaterial)
-                            .clipShape(Circle())
-                    }
-                }
-                Spacer()
+            Spacer()
+            
+            //Measure
+            ZStack {
                 
-                //Measure
-                ZStack {
-                    
-                    Circle()
-                        .opacity(0.01)
-                    Circle()
-                        .stroke(lineWidth: 10)
-                        .foregroundColor(isMeasuring ? .red : .green)
-                    VStack (alignment: .center){
-                        Text("\(rotationAngle, specifier: "%.0f")°")
-                            .font(.system(size: 72))
-                            .bold()
-                            .padding(.vertical, -10)
-                        Divider()
-                            .padding(.horizontal,20)
-                        Text("\(180 - rotationAngle, specifier: "%.0f" )°")
-                            .font(.system(size: 64))
-                            .padding(.vertical, -10)
-                    }
+                Circle()
+                    .opacity(0.01)
+                Circle()
+                    .stroke(lineWidth: 10)
+                    .foregroundColor(isMeasuring ? .red : .green)
+                VStack (alignment: .center){
+                    Text("\(rotationAngle, specifier: "%.0f")°")
+                        .font(.system(size: 72))
+                        .bold()
+                        .padding(.vertical, -10)
+                    Divider()
+                        .padding(.horizontal,20)
+                    Text("\(180 - rotationAngle, specifier: "%.0f" )°")
+                        .font(.system(size: 64))
+                        .padding(.vertical, -10)
                 }
-                .onTapGesture {
-                    motionManager.startUpdates()
-                    if !isMeasuring {
-                        startMeasuring()
-                    } else {
-                        stopMeasuring()
-                        resetTarget()
-                    }
-                }
-                HStack {
-                    Button(action: {
-                        // To do: Record
-                        isRecording.toggle()
-                    }) {
-                        Image(systemName: "record.circle")
-                            .foregroundStyle(isRecording ? .red : .gray)
-                            .font(.system(size: 24))
-                            .padding(10)
-                            .background(.ultraThinMaterial)
-                            .clipShape(Circle())
-                    }
-                    Spacer()
-                    
-                    Button(action: {
-                        if !isTargetSet {
-                            setTarget()
-                        } else {
-                            resetTarget()
-                        }
-                    }) {
-                        Image(systemName: "scope")
-                            .foregroundStyle(isTargetSet ? (didReachTarget() ? .green : .red) : .gray)
-                            .font(.system(size: 24))
-                            .padding(10)
-                            .background(.ultraThinMaterial)
-                            .clipShape(Circle())
-                    }
-                    .disabled(!isMeasuring)
-                    .opacity(isMeasuring ? 1 : 0.5)
-                }
-                Spacer()
-                RoundedRectangle(cornerRadius: 25)
-                    .frame(height: 50)
-                    .foregroundStyle(didReachTarget() ? .green : .gray)
-                
-                
-                Text("\(targetQuaternion)")
-                Text("\(repCount)")
-                Text("is Target Set? \(isTargetSet)")
-                if didReachTarget() == true {
-                    Text("Target Reached")
+            }
+            .onTapGesture {
+                motionManager.startUpdates()
+                if !isMeasuring {
+                    startMeasuring()
                 } else {
-                    Text("Target not reached")
-                }
-                VStack {
-                    Slider(
-                        value: $rangeAccuracy,
-                        in: 2...15
-                    )
-                    Text("Target Accuracy: ±\(rangeAccuracy, specifier: "%.1f")°")
-                }
-                .padding()
-                
-                VStack {
-                    Button(isTargetSet ? "Reset" : "Set Target") {
-                        if !isTargetSet {
-                            setTarget()
-                        } else {
-                            resetTarget()
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .foregroundStyle(.white)
-                    .tint(.blue)
+                    addMeasurement()
+                    stopMeasuring()
+                    resetTarget()
                 }
             }
+            HStack {
+                Button(action: {
+                    toggleRecording()
+//                    isRecording.toggle()
+                }) {
+                    Image(systemName: "record.circle")
+                        .foregroundStyle(isRecording ? .red : .gray)
+                        .font(.system(size: 24))
+                        .padding(10)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                }
+                Spacer()
+                
+                Button(action: {
+                    if !isTargetSet {
+                        setTarget()
+                    } else {
+                        resetTarget()
+                        stopMeasuring()
+                        
+                    }
+                }) {
+                    Image(systemName: "scope")
+                        .foregroundStyle(isTargetSet ? (isWithinTargetRange() ? .green : .red) : .gray)
+                        .font(.system(size: 24))
+                        .padding(10)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                }
+                .disabled(!isMeasuring)
+                .opacity(isMeasuring ? 1 : 0.5)
+            }
+            Spacer()
+            RoundedRectangle(cornerRadius: 25)
+                .frame(height: 50)
+                .foregroundStyle(didReachTarget() ? .green : .gray)
+            
+            Text("\(repCount, specifier: "%.0f")")
+            VStack {
+                Slider(
+                    value: $rangeAccuracy,
+                    in: 2...15
+                )
+                Text("Target Accuracy: ±\(rangeAccuracy, specifier: "%.0f")°")
+            }
+            .padding()
+            
         }
+        
         .padding()
         .onDisappear {
             // Always clean up timer if the view disappears
@@ -186,8 +159,11 @@ struct MeasureView: View {
             stopMeasuring()
         }
         .sheet(isPresented: $showingHistory) {
-            Text("History")
-                .presentationDetents([.medium, .large])
+            HistoryView()
+                .presentationDetents([.height(300), .large])
+                .presentationDragIndicator(.visible)
+                .background(.clear)
+                .presentationBackground(.ultraThinMaterial)
         }
         .sheet(isPresented: $showingInfo) {
             Text("Info")
@@ -196,36 +172,29 @@ struct MeasureView: View {
     }
     
     // Measure
-//    private func startMeasuring() {
-//        rotationAngle = 0.0
-//        isMeasuring = true
-//        motionManager.startUpdates()
-//        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { // 0.1 seconds delay
-//            initialQuaternion = motionManager.currentQuaternion
-//            currentQuaternion = motionManager.currentQuaternion
-//            timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
-//                updateRotation()
-//            }
-//        }
-//    }
   
     private func startMeasuring() {
         rotationAngle = 0.0
         isMeasuring = true
         motionManager.startUpdates()
-
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             initialQuaternion = motionManager.currentQuaternion
             timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
                 guard let start = initialQuaternion else { return }
                 currentQuaternion = motionManager.currentQuaternion
-
+                
                 if let current = currentQuaternion {
                     let newAngle = calculateRotationAngle(from: start, to: current)
                     rotationAngle = newAngle
+                    
+                    // Captures readings if recording
+                    if isRecording {
+                        let reading = AngleReading(angle: rotationAngle, timestamp: Date())
+                        recordedReadings.append(reading)
+                    }
                 }
-
+                
                 if isTargetSet {
                     _ = didReachTarget()
                 }
@@ -240,13 +209,6 @@ struct MeasureView: View {
         motionManager.stopUpdates()
     }
     
-    private func updateRotation() {
-        guard let start = initialQuaternion, let current = motionManager.currentQuaternion else { return }
-        let newAngle = calculateRotationAngle(from: start, to: current)
-        
-        rotationAngle = newAngle
-    }
-    
     private func calculateRotationAngle(from start: CMQuaternion, to end: CMQuaternion) -> Double {
         let dot = start.x * end.x + start.y * end.y + start.z * end.z + start.w * end.w
         let clampedDot = min(1.0, max(-1.0, dot)) // Clamp to prevent NaN
@@ -257,28 +219,11 @@ struct MeasureView: View {
         if angleDegrees > 180 {
             angleDegrees = 360 - angleDegrees
         }
-        
         return angleDegrees
     }
     
     
     // Target
-    
-    private func startUpdates() {
-        motionManager.startUpdates()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { _ in
-            currentQuaternion = motionManager.currentQuaternion
-            if isMeasuring && isTargetSet {
-                _ = didReachTarget() // This will handle the vibrate and rep count
-            }
-        }
-    }
-    
-    private func stopUpdates() {
-        timer?.invalidate()
-        timer = nil
-        motionManager.stopUpdates()
-    }
     
     private func setTarget() {
         targetQuaternion = currentQuaternion
@@ -291,33 +236,83 @@ struct MeasureView: View {
         repCount = 0
         isMeasuring = false
     }
-    
+  
     private func didReachTarget() -> Bool {
         guard let target = targetQuaternion, let current = currentQuaternion else {
             return false
         }
-        
+
         let angleDifference = calculateRotationAngle(from: target, to: current)
-        
-        if angleDifference <= rangeAccuracy {
-            if !repAlreadyCounted {
+        let isWithinRange = angleDifference <= rangeAccuracy
+
+        if isWithinRange && !repAlreadyCounted {
+            DispatchQueue.main.async {
                 vibrate()
                 addRep()
-                repAlreadyCounted = true  // ✅ Mark that we counted this rep
+                repAlreadyCounted = true
             }
-            return true
-        } else {
-            repAlreadyCounted = false // ✅ Reset when they leave the target zone
+        } else if !isWithinRange {
+            DispatchQueue.main.async {
+                repAlreadyCounted = false
+            }
+        }
+
+        return isWithinRange
+    }
+    
+    private func isWithinTargetRange() -> Bool {
+        guard let target = targetQuaternion, let current = currentQuaternion else {
             return false
         }
+        let angleDifference = calculateRotationAngle(from: target, to: current)
+        return angleDifference <= rangeAccuracy
     }
     
     private func addRep() {
-        repCount += 1
+        DispatchQueue.main.async {
+            repCount += 1
+        }
     }
     
     private func vibrate() {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+    }
+    
+    
+    // Record
+    private func toggleRecording() {
+        if isRecording {
+            // Stopping: save measurement
+            saveRecording()
+            recordedReadings.removeAll()
+            isRecording = false
+            // Stop measuring
+            stopMeasuring()
+        } else {
+            // Starting
+            recordedReadings.removeAll()
+            isRecording = true
+            if !isMeasuring {
+                startMeasuring()
+            }
+        }
+    }
+
+    private func saveRecording() {
+        guard !recordedReadings.isEmpty else { return }
+        
+        let measurement = MeasurementItem(name: "Recorded Session", timestamp: Date())
+        measurement.readings.append(contentsOf: recordedReadings)
+        context.insert(measurement)
+    }
+    
+    // SwiftData Functions
+    func addMeasurement() {
+        let measurement = MeasurementItem(name: "Quick Measure", timestamp: Date())
+        let reading = AngleReading(angle: rotationAngle, timestamp: Date())
+        measurement.readings.append(reading)
+        
+        context.insert(measurement)
     }
 }
 

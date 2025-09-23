@@ -4,10 +4,10 @@
 ////
 ////  Created by Wilson Chan on 1/26/24.
 ////
-//
 import Foundation
 import CoreMotion
 import Observation
+
 
 @MainActor
 @Observable class MotionManager {
@@ -24,7 +24,7 @@ import Observation
     func startUpdates() {
         guard motionManager.isDeviceMotionAvailable else { return }
         
-        motionManager.startDeviceMotionUpdates(using: .xMagneticNorthZVertical, to: .main) { [weak self] data, error in
+        motionManager.startDeviceMotionUpdates(using: .xArbitraryZVertical, to: .main) { [weak self] data, error in
             guard let motion = data?.attitude else { return }
             self?.currentQuaternion = motion.quaternion
         }
@@ -34,3 +34,4 @@ import Observation
         motionManager.stopDeviceMotionUpdates()
     }
 }
+

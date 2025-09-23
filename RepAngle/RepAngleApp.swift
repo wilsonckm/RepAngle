@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct RepAngleApp: App {
@@ -14,12 +15,13 @@ struct RepAngleApp: App {
     
     var body: some Scene {
         WindowGroup {
-           HomeView()
+            HomeView()
                 .fullScreenCover(isPresented: $needsOnboarding) {
-                needsOnboarding = false
-            } content: {
-                OnboardingView()
-            }
-    }
+                    needsOnboarding = false
+                } content: {
+                    OnboardingView()
+                }
         }
+        .modelContainer(for: MeasurementItem.self)
     }
+}

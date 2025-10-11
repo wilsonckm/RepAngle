@@ -136,7 +136,7 @@ struct MeasureView: View {
             Spacer()
             RoundedRectangle(cornerRadius: 25)
                 .frame(height: 50)
-                .foregroundStyle(didReachTarget() ? .green : .gray)
+                .foregroundStyle(isWithinTargetRange() ? .green : .gray)
             
             Text("\(repCount, specifier: "%.0f")")
             VStack {
@@ -166,7 +166,9 @@ struct MeasureView: View {
                 .presentationBackground(.ultraThinMaterial)
         }
         .sheet(isPresented: $showingInfo) {
-            Text("Info")
+            InfoView()
+                .presentationDetents([.height(300), .large])
+                .presentationDragIndicator(.visible)
                 .presentationDetents([.large])
         }
     }
@@ -179,24 +181,28 @@ struct MeasureView: View {
         motionManager.startUpdates()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            initialQuaternion = motionManager.currentQuaternion
-            timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
-                guard let start = initialQuaternion else { return }
-                currentQuaternion = motionManager.currentQuaternion
-                
-                if let current = currentQuaternion {
-                    let newAngle = calculateRotationAngle(from: start, to: current)
-                    rotationAngle = newAngle
-                    
-                    // Captures readings if recording
-                    if isRecording {
-                        let reading = AngleReading(angle: rotationAngle, timestamp: Date())
-                        recordedReadings.append(reading)
+            Task { @MainActor in
+                self.initialQuaternion = self.motionManager.currentQuaternion
+                self.timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { _ in
+                    Task { @MainActor in
+                        guard let start = self.initialQuaternion else { return }
+                        self.currentQuaternion = self.motionManager.currentQuaternion
+                        
+                        if let current = self.currentQuaternion {
+                            let newAngle = self.calculateRotationAngle(from: start, to: current)
+                            self.rotationAngle = newAngle
+                            
+                            // Captures readings if recording
+                            if self.isRecording {
+                                let reading = AngleReading(angle: self.rotationAngle, timestamp: Date())
+                                self.recordedReadings.append(reading)
+                            }
+                        }
+                        
+                        if self.isTargetSet {
+                            _ = self.didReachTarget()
+                        }
                     }
-                }
-                
-                if isTargetSet {
-                    _ = didReachTarget()
                 }
             }
         }
@@ -246,15 +252,19 @@ struct MeasureView: View {
         let isWithinRange = angleDifference <= rangeAccuracy
 
         if isWithinRange && !repAlreadyCounted {
-            DispatchQueue.main.async {
-                vibrate()
-                addRep()
-                repAlreadyCounted = true
-            }
+//            DispatchQueue.main.async {
+//                vibrate()
+//                addRep()
+//                repAlreadyCounted = true
+//            }
+            repAlreadyCounted = true
+            vibrate()
+            addRep()
         } else if !isWithinRange {
-            DispatchQueue.main.async {
-                repAlreadyCounted = false
-            }
+//            DispatchQueue.main.async {
+//                repAlreadyCounted = false
+//            }
+            repAlreadyCounted = false
         }
 
         return isWithinRange

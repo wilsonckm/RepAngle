@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct OnboardingView: View {
-    @Environment (\.dismiss) var dismiss
+    @Environment(\.dismiss) var dismiss
     @State var onboardingIndex = 0
     
     var body: some View {
@@ -40,7 +40,7 @@ struct OnboardingView: View {
                 //Onboarding page 2
                 OnboardingDetailView(bgColor: Color(.black),
                                      headline: "Track your reps",
-                                     subtitle: "Ensure consistent range of motion. Reps only count if you reach the range you set.") {
+                                     subtitle: "Ensure consistent range of motion. Reps only count if you reach the target you set.") {
                     withAnimation {
                         onboardingIndex = 2
                     }
@@ -51,10 +51,21 @@ struct OnboardingView: View {
                 //Onboarding page 3
                 OnboardingDetailView(bgColor: Color(.black),
                                      headline: "Measurment Accuracy Tip:",
-                                     subtitle: "Try to be as consistent as possible with where it is placed pre and post measurement") {
-                    dismiss()
+                                     subtitle: "For best results, place the device in a consistent position each time you measure. Keep the device aligned with the limb or segment you want to track, and make sure you’re only moving in a single plane — just like you would with a traditional goniometer. Avoid twisting or combining motions, since that can introduce error. Measure flexion/extension, abduction/adduction, or rotation separately for the most accurate results.") {
+                    withAnimation {
+                        onboardingIndex = 3
+                    }
                 }
                                      .tag(2)
+                                     .ignoresSafeArea()
+                
+                //Onboarding page 4
+                OnboardingDetailView(bgColor: Color(.black),
+                                     headline: "Disclaimer and Safe Use",
+                                     subtitle: "RepAngle is not a medical device. Always consult a professional for clinical decisions.") {
+                    dismiss()
+                }
+                                     .tag(3)
                                      .ignoresSafeArea()
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
@@ -73,6 +84,9 @@ struct OnboardingView: View {
                     Circle()
                         .frame(width: 10)
                         .foregroundStyle(onboardingIndex == 2 ? .white : .gray)
+                    Circle()
+                        .frame(width: 10)
+                        .foregroundStyle(onboardingIndex == 3 ? .white : .gray)
                     Spacer()
                 }
                 .padding(.bottom, 200)
